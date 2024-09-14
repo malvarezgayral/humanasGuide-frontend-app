@@ -1,7 +1,8 @@
-import Image from "next/image";
+import Layout from "../components/Layout";
+import HomeComp from "@/components/Home";
 
 export default function Home() {
-  return <>
-  <div>Hola Next</div>
-  </>
+  return <Layout>
+  <HomeComp />
+  </Layout>
 }
