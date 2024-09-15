@@ -1,6 +1,4 @@
-interface CustomButtonType {
-    title: String
-};
+import { CustomButtonType } from "@/helpers/interfacesAndTypes";
 
 function CustomButton(props: CustomButtonType) {
     const { title } = props;
