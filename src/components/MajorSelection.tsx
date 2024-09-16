@@ -1,6 +1,6 @@
 function MajorSelection() {
     return <div>
-        
+        here
     </div>
 
 }
