@@ -23,7 +23,6 @@ function CustomSelection(props: any) {
                 ))}
             </NativeSelect>
         </FormControl>
-
     </div>
 
 }

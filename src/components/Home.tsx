@@ -6,14 +6,13 @@ import CustomSelection from "./CustomSelection";
 import { majors } from "@/constants/mockedData";
 import { getSubjects } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
+import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
 
 function HomeComp() {
     const [pickedMajor, setPickedMajor] = useState('');
     const [subjects, setSubjects] = useState([])
     const [pickedSubject, setPickedSubject] = useState('');
     const [fetchedMajors, setFetchedMajors] = useState(null);
-
-    console.log(fetchedMajors);
 
     useEffect(() => {
         const fetchingMajors = async () => {
@@ -30,7 +29,6 @@ function HomeComp() {
 
     useEffect(() => {
         const subjectsTemp = getSubjects(pickedMajor);
-        console.log('subj: ', subjectsTemp);
         setSubjects(subjectsTemp);
 
     }, [pickedMajor])
@@ -43,9 +41,8 @@ function HomeComp() {
         setPickedSubject(event.target.value)
     }
 
-    console.log('major: ', pickedMajor)
-
     return <div className="h-full w-full bg-primaryWhite py-8">
+        <AphorismsBoxGenerator />
         <div className="w-full flex flex-col items-center">
             <CustomSelection pickedValue={pickedMajor} 
             setPickedValue={handleChangeMajor} 
