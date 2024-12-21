@@ -5,10 +5,6 @@ function AphorismsBoxGenerator(){
     const [aphorism, setAphorism] = useState('');
     const [bool, setBool] = useState(false)
 
-    setInterval(() => {
-        setBool(!bool)
-    }, 24000)
-
     useEffect(() => {
         const fetchingAph = async () => {
             try {
@@ -18,11 +14,17 @@ function AphorismsBoxGenerator(){
                 console.error("Error fetching aph:", error);
             }
         };
-    
         fetchingAph();
-    }, [bool])
 
-    console.log(aphorism.autor)
+        const timer = setInterval(() => {
+            setBool(!bool)
+        }, 9000)
+
+        return () => {
+            console.log('unmounting');
+            clearInterval(timer);
+        };
+    }, [bool])
     
     return <div className="w-1/4 bg-black rounded-xl p-2">
         <p>{aphorism.autor}:</p>
