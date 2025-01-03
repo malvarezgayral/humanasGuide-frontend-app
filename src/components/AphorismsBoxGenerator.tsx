@@ -1,15 +1,24 @@
 import { getAphorism } from "@/services/api/getAIAphorism";
 import { useEffect, useState } from "react";
 
+interface AphObject {
+    autor: String;
+    aphorism: String
+}
+
 function AphorismsBoxGenerator(){
-    const [aphorism, setAphorism] = useState('');
-    const [bool, setBool] = useState(false)
+    const [aphorism, setAphorism] = useState<AphObject>();
+    const [bool, setBool] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchingAph = async () => {
             try {
                 const data = await getAphorism();
-                setAphorism(data);
+                const finalData: AphObject = {
+                    autor: 'algun autor',
+                    aphorism: data
+                }
+                setAphorism(finalData);
             } catch (error) {
                 console.error("Error fetching aph:", error);
             }
@@ -26,9 +35,15 @@ function AphorismsBoxGenerator(){
         };
     }, [bool])
     
-    return <div className="w-1/4 bg-black rounded-xl p-2">
-        <p>{aphorism.autor}:</p>
-        <p>"{aphorism.aphorism}"</p>
+    return <div className="w-1/4 bg-primaryOrange rounded-xl p-2">
+        {aphorism ? (
+            <>
+                <p>{aphorism.autor}:</p>
+                <p>"{aphorism.aphorism}"</p>
+            </>
+        ) : (
+            <p>Loading...</p> // Puedes mostrar un mensaje de carga mientras se obtiene el dato.
+        )}
     </div>
 }
 
