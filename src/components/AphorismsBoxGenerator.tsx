@@ -14,11 +14,7 @@ function AphorismsBoxGenerator(){
         const fetchingAph = async () => {
             try {
                 const data = await getAphorism();
-                const finalData: AphObject = {
-                    autor: 'algun autor',
-                    aphorism: data
-                }
-                setAphorism(finalData);
+                setAphorism(data);
             } catch (error) {
                 console.error("Error fetching aph:", error);
             }
@@ -39,7 +35,7 @@ function AphorismsBoxGenerator(){
         {aphorism ? (
             <>
                 <p>{aphorism.autor}:</p>
-                <p>"{aphorism.aphorism}"</p>
+                <p>{aphorism.aphorism}</p>
             </>
         ) : (
             <p>Loading...</p> // Puedes mostrar un mensaje de carga mientras se obtiene el dato.
