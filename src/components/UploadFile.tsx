@@ -1,6 +1,9 @@
 import { SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DropdownForm } from "./DropdownForm";
+import { fetchMajors } from "@/services/api/getMajors";
+import { getAllCatedrasBy } from "@/services/api/getSubjects";
+import { getAllCalls, getAllTypes, getAllYears } from "@/services/api/getFormData";
 
 export const UploadFile = () => {
     const [formData, setFormData] = useState({
@@ -20,9 +23,9 @@ export const UploadFile = () => {
         // Fetch data from API
         const fetchingFormData = async () => {
             try {
-                const carreras = await getAllCarreras();
+                const carreras = await fetchMajors();
                 setCarreras(carreras);
-                const catedras = await getAllCatedras(formData.carrera);
+                const catedras = await getAllCatedrasBy(formData.carrera);
                 setCatedras(catedras);
                 const types = await getAllTypes();
                 setTypes(types);
@@ -78,10 +81,10 @@ export const UploadFile = () => {
     };
 
     return <div className="flex flex-col items-center">
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={optionsCarrera} formOptions={carreraForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={optionsCatedra} formOptions={catedraForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={optionsTypeOfFile} formOptions={typeForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={optionsYear} formOptions={yearForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={optionsCall} formOptions={callForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={carreras} formOptions={carreraForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={catedras} formOptions={catedraForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={types} formOptions={typeForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={years} formOptions={yearForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={calls} formOptions={callForm} />
     </div>
 }
