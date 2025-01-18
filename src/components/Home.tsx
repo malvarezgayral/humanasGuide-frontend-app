@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import CustomSelection from "./CustomSelection";
-import { majors } from "@/constants/mockedData";
 import { getSubjects } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
 import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
@@ -12,7 +11,7 @@ function HomeComp() {
     const [pickedMajor, setPickedMajor] = useState('');
     const [subjects, setSubjects] = useState([])
     const [pickedSubject, setPickedSubject] = useState('');
-    const [fetchedMajors, setFetchedMajors] = useState(null);
+    const [fetchedMajors, setFetchedMajors] = useState<string[] | null>(null);
 
     useEffect(() => {
         const fetchingMajors = async () => {
@@ -44,10 +43,10 @@ function HomeComp() {
     return <div className="h-full w-full bg-primaryWhite py-8">
         <AphorismsBoxGenerator />
         <div className="w-full flex flex-col items-center">
-            <CustomSelection pickedValue={pickedMajor} 
+            {fetchedMajors && fetchedMajors.length > 0 && <CustomSelection pickedValue={pickedMajor} 
             setPickedValue={handleChangeMajor} 
             title={'carrera'} 
-            iterableOptions={majors} />
+            iterableOptions={fetchedMajors} />}
             {pickedMajor !== '' && subjects && subjects.length > 0 && <CustomSelection pickedValue={pickedSubject} 
             setPickedValue={handleChangeSubject} 
             title={'cátedra'} 

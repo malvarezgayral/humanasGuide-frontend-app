@@ -17,8 +17,8 @@ function CustomSelection(props: any) {
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
                 {iterableOptions.map((opt: any) => (
-                    <option key={opt.value} value={opt.value}>
-                        {opt.label}
+                    <option key={opt.name} value={opt.name}>
+                        {opt.name}
                     </option>
                 ))}
             </NativeSelect>
