@@ -15,3 +15,4 @@ export const theme = createTheme({
 
 export const primaryOrange = '#EC961D';
 export const whiteInnerText = '#F5F5F5';
+export const primaryBlack = '#18171B';
