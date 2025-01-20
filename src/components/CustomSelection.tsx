@@ -3,6 +3,12 @@ import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 function CustomSelection(props: any) {
     const { setPickedValue, pickedValue, iterableOptions, title } = props;
 
+    const transformToName = (value: String) => {
+        return value
+          .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
+          .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
+      };
+
     return <div className="py-5">
         <FormControl>
             <InputLabel htmlFor="pick-v" id="pickV-label">Selecciona tu {title}</InputLabel>
@@ -17,8 +23,8 @@ function CustomSelection(props: any) {
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
                 {iterableOptions.map((opt: any) => (
-                    <option key={opt.name} value={opt.name}>
-                        {opt.name}
+                    <option key={opt.name} value={opt.id}>
+                        {transformToName(opt.name)}
                     </option>
                 ))}
             </NativeSelect>

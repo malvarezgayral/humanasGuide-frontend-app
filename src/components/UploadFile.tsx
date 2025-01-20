@@ -1,18 +1,16 @@
-import { SelectChangeEvent } from "@mui/material";
+"use client";
+
 import { useEffect, useState } from "react";
-import { DropdownForm } from "./DropdownForm";
 import { fetchMajors } from "@/services/api/getMajors";
-import { getAllCatedrasBy } from "@/services/api/getSubjects";
+import { getAllSubjectsBy } from "@/services/api/getSubjects";
 import { getAllCalls, getAllTypes, getAllYears } from "@/services/api/getFormData";
+import CustomSelection from "./CustomSelection";
+
 
 export const UploadFile = () => {
-    const [formData, setFormData] = useState({
-        carrera: "",
-        catedra: "",
-        tipo: "",
-        anio: "",
-        llamado: "",
-    });
+    const [pickedMajorValue, setPickedMajorValue] = useState<number>();
+    const [pickedSubjectValue, setPickedSubjectValue] = useState<number>();
+
     const [carreras, setCarreras] = useState<string[]>([]);
     const [catedras, setCatedras] = useState<string[]>([]);
     const [types, setTypes] = useState<string[]>([]);
@@ -21,70 +19,55 @@ export const UploadFile = () => {
 
     useEffect(() => {
         // Fetch data from API
-        const fetchingFormData = async () => {
+        const fetchingMajors = async () => {
             try {
-                const carreras = await fetchMajors();
-                setCarreras(carreras);
-                const catedras = await getAllCatedrasBy(formData.carrera);
-                setCatedras(catedras);
-                const types = await getAllTypes();
-                setTypes(types);
-                const years = await getAllYears(formData.carrera);
-                setYears(years);
-                const calls = await getAllCalls();
-                setCalls(calls);
+                const majors = await fetchMajors(); // manejamos la promesa con async await en este caso
+                setCarreras(majors); // updateamos el estado local del componente una vez que la respuesta esperada llegó
             } catch (error) {
-                console.error("Error fetching aph:", error);
+                console.error("Error fetching majors:", error);
             }
         };
-        fetchingFormData();
+    
+        fetchingMajors();
 
         return () => {
             console.log('unmounting');
         };
     }, []);
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value as string,
-        });
-    };
+    useEffect(() => {
+        const fetchSubjects = async () => {
+            if (pickedMajorValue) {
+                const catedras = await getAllSubjectsBy(pickedMajorValue);
+                setCatedras(catedras);
+            }
+        };
 
-    const carreraForm = {
-        label: "Carrera",
-        id: "carrera",
-        name: "carrera",
-    };
+        fetchSubjects();
+    }, [pickedMajorValue])
 
-    const catedraForm = {
-        label: "Cátedra",
-        id: "catedra",
-        name: "catedra",
-    };
+    const handleChangeMajor = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPickedMajorValue(Number(event.target.value))
+    }
 
-    const typeForm = {
-        label: "Tipo de aporte",
-        id: "tipo",
-        name: "tipo",
-    };
-    const yearForm = {
-        label: "Año",
-        id: "anio",
-        name: "anio",
-    };
-    const callForm = {
-        label: "Llamado",
-        id: "llamado",
-        name: "llamado",
-    };
+    const handleChangeSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPickedSubjectValue(Number(event.target.value))
+    }
 
-    return <div className="flex flex-col items-center">
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={carreras} formOptions={carreraForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={catedras} formOptions={catedraForm} />
+
+    return <div className="flex flex-col items-center h-full w-full bg-primaryWhite py-8">
+        <div>holi</div>
+        {carreras && carreras.length > 0 && <CustomSelection pickedValue={pickedMajorValue}
+            setPickedValue={handleChangeMajor}
+            title={'carrera'}
+            iterableOptions={carreras} />}
+        {pickedMajorValue && catedras && catedras.length > 0 && <CustomSelection pickedValue={pickedSubjectValue}
+            setPickedValue={handleChangeSubject}
+            title={'cátedra'}
+            iterableOptions={catedras} />}
+        {/* <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={catedras} formOptions={catedraForm} />
         <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={types} formOptions={typeForm} />
         <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={years} formOptions={yearForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={calls} formOptions={callForm} />
+        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={calls} formOptions={callForm} /> */}
     </div>
 }

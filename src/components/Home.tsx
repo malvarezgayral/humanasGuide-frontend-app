@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import CustomSelection from "./CustomSelection";
-import { getSubjects } from "@/services/api/getSubjects";
+import { getAllSubjectsBy } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
 import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
 
 function HomeComp() {
-    const [pickedMajor, setPickedMajor] = useState('');
+    const [pickedMajorValue, setPickedMajorValue] = useState<number>();
     const [subjects, setSubjects] = useState([])
     const [pickedSubject, setPickedSubject] = useState('');
     const [fetchedMajors, setFetchedMajors] = useState<string[] | null>(null);
@@ -27,13 +27,18 @@ function HomeComp() {
     }, [])
 
     useEffect(() => {
-        const subjectsTemp = getSubjects(pickedMajor);
-        setSubjects(subjectsTemp);
+        const fetchSubjects = async () => {
+            if (pickedMajorValue) {
+                const subjects = await getAllSubjectsBy(pickedMajorValue);
+                if (subjects && subjects.length > 0) setSubjects(subjects);
+            }
+        };
 
-    }, [pickedMajor])
+        fetchSubjects();
+    }, [pickedMajorValue])
 
     const handleChangeMajor = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setPickedMajor(event.target.value)
+        setPickedMajorValue(Number(event.target.value))
     }
 
     const handleChangeSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -43,11 +48,11 @@ function HomeComp() {
     return <div className="h-full w-full bg-primaryWhite py-8">
         <AphorismsBoxGenerator />
         <div className="w-full flex flex-col items-center">
-            {fetchedMajors && fetchedMajors.length > 0 && <CustomSelection pickedValue={pickedMajor} 
+            {fetchedMajors && fetchedMajors.length > 0 && <CustomSelection pickedValue={pickedMajorValue} 
             setPickedValue={handleChangeMajor} 
             title={'carrera'} 
             iterableOptions={fetchedMajors} />}
-            {pickedMajor !== '' && subjects && subjects.length > 0 && <CustomSelection pickedValue={pickedSubject} 
+            {pickedMajorValue && subjects && subjects.length > 0 && <CustomSelection pickedValue={pickedSubject} 
             setPickedValue={handleChangeSubject} 
             title={'cátedra'} 
             iterableOptions={subjects} />}
