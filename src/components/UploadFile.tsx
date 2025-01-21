@@ -5,6 +5,7 @@ import { fetchMajors } from "@/services/api/getMajors";
 import { getAllSubjectsBy } from "@/services/api/getSubjects";
 import { getAllCalls, getAllTypes, getAllYears } from "@/services/api/getFormData";
 import CustomSelection from "./CustomSelection";
+import { UploadFieldSection } from "./UploadFieldSection";
 
 
 export const UploadFile = () => {
@@ -16,6 +17,9 @@ export const UploadFile = () => {
     const [types, setTypes] = useState<string[]>([]);
     const [years, setYears] = useState<string[]>([]);
     const [calls, setCalls] = useState<string[]>([]);
+
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch data from API
@@ -54,9 +58,24 @@ export const UploadFile = () => {
         setPickedSubjectValue(Number(event.target.value))
     }
 
+    const handleSubmit = async () => {
+        if (!selectedFile) {
+          setErrorMessage("No se ha seleccionado ningún archivo válido.");
+          return;
+        }
+        console.log('selectedFile: ', selectedFile);
+    
+        // Crear un FormData para enviar el archivo al backend
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("carrera", pickedMajorValue?.toString() || "");
+        formData.append("catedra", pickedSubjectValue?.toString() || "");
+        console.log('formData: ', formData);
+    }
+
 
     return <div className="flex flex-col items-center h-full w-full bg-primaryWhite py-8">
-        <div>holi</div>
+        <UploadFieldSection handleSubmit={handleSubmit} setErrorMessage={setErrorMessage} errorMessage={errorMessage} setSelectedFile={setSelectedFile} selectedFile={selectedFile}/>
         {carreras && carreras.length > 0 && <CustomSelection pickedValue={pickedMajorValue}
             setPickedValue={handleChangeMajor}
             title={'carrera'}
