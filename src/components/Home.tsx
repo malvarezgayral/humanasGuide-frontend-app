@@ -6,6 +6,7 @@ import CustomSelection from "./CustomSelection";
 import { getAllSubjectsBy } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
 import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
+import Link from "next/link";
 
 function HomeComp() {
     const [pickedMajorValue, setPickedMajorValue] = useState<number>();
@@ -58,8 +59,12 @@ function HomeComp() {
             iterableOptions={subjects} />}
         </div>
         <div className="flex flex-row justify-around py-5">
-            <CustomButton title='Buscar aportes' />
-            <CustomButton title='Subir aporte' />
+            <Link href="">
+                <CustomButton title='Buscar aportes' />
+            </Link>
+            <Link href="\upload">
+                <CustomButton title='Subir aporte' />
+            </Link>
         </div>
     </div>
 }

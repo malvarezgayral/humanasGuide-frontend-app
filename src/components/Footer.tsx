@@ -11,7 +11,7 @@ function Footer() {
             <p className="font-bold text-lg pb-2">Mapa del sitio</p>
             <a href="">Carreras</a>
             <a href="">Buscar aportes</a>
-            <a href="">Subir aportes</a>
+            <a href="/upload">Subir aportes</a>
         </div>
 
         <div className="flex flex-col items-center py-3">
