@@ -17,6 +17,7 @@ function HomeComp() {
         const fetchingMajors = async () => {
             try {
                 const data = await fetchMajors(); // manejamos la promesa con async await en este caso
+                console.log(data)
                 setFetchedMajors(data); // updateamos el estado local del componente una vez que la respuesta esperada llegó
             } catch (error) {
                 console.error("Error fetching majors:", error);

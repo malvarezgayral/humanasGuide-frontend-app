@@ -11,12 +11,15 @@ import { UploadFieldSection } from "./UploadFieldSection";
 export const UploadFile = () => {
     const [pickedMajorValue, setPickedMajorValue] = useState<number>();
     const [pickedSubjectValue, setPickedSubjectValue] = useState<number>();
+    const [pickedTypeValue, setPickedTypeValue] = useState<String>();
+    const [pickedYearValue, setPickedYearValue] = useState<number>();
+    const [pickedMonthValue, setPickedMonthValue] = useState<String>();
 
     const [carreras, setCarreras] = useState<string[]>([]);
     const [catedras, setCatedras] = useState<string[]>([]);
     const [types, setTypes] = useState<string[]>([]);
-    const [years, setYears] = useState<string[]>([]);
-    const [calls, setCalls] = useState<string[]>([]);
+    const [years, setYears] = useState<number[]>([]);
+    const [months, setMonths] = useState<string[]>([]);
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -58,6 +61,18 @@ export const UploadFile = () => {
         setPickedSubjectValue(Number(event.target.value))
     }
 
+    const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPickedTypeValue(event.target.value)
+    }
+
+    const handleChangeYear = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPickedYearValue(Number(event.target.value))
+    }
+
+    const handleChangeMonth = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setPickedMonthValue(event.target.value)
+    }
+
     const handleSubmit = async () => {
         if (!selectedFile) {
           setErrorMessage("No se ha seleccionado ningún archivo válido.");
@@ -84,6 +99,12 @@ export const UploadFile = () => {
             setPickedValue={handleChangeSubject}
             title={'cátedra'}
             iterableOptions={catedras} />}
+        {types && types.length > 0 && <CustomSelection pickedValue={pickedTypeValue} 
+        setPickedValue={handleChangeType} title={'tipo'} iterableOptions={types} />}
+        {pickedSubjectValue && years && years.length > 0 && <CustomSelection pickedValue={pickedYearValue} 
+        setPickedValue={handleChangeYear} title={'año'} iterableOptions={years} />}
+        {months && months.length > 0 && <CustomSelection pickedValue={pickedMonthValue} 
+        setPickedValue={handleChangeMonth} title={'llamado'} iterableOptions={months} />}
         {/* <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={catedras} formOptions={catedraForm} />
         <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={types} formOptions={typeForm} />
         <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={years} formOptions={yearForm} />
