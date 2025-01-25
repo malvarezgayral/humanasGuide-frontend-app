@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { fetchMajors } from "@/services/api/getMajors";
-import { getAllSubjectsBy } from "@/services/api/getSubjects";
+import { getAllSubjectsBy, getYearsBySubject } from "@/services/api/getSubjects";
 import { getAllCalls, getAllTypes, getAllYears } from "@/services/api/getFormData";
 import CustomSelection from "./CustomSelection";
 import { UploadFieldSection } from "./UploadFieldSection";
+import { fetchFileTypes, fetchMonths, uploadFile } from "@/services/api/getFiles";
 
 
 export const UploadFile = () => {
@@ -30,6 +31,10 @@ export const UploadFile = () => {
             try {
                 const majors = await fetchMajors(); // manejamos la promesa con async await en este caso
                 setCarreras(majors); // updateamos el estado local del componente una vez que la respuesta esperada llegó
+                const typeFiles = await fetchFileTypes();
+                setTypes(typeFiles);
+                const months = await fetchMonths();
+                setMonths(months);
             } catch (error) {
                 console.error("Error fetching majors:", error);
             }
@@ -52,6 +57,17 @@ export const UploadFile = () => {
 
         fetchSubjects();
     }, [pickedMajorValue])
+
+    useEffect(() => {
+        const fetchSubjectYears = async () => {
+            if (pickedSubjectValue) {
+                const years = await getYearsBySubject(pickedSubjectValue);
+                setYears(years);
+            }
+        };
+
+        fetchSubjectYears();
+    }, [pickedSubjectValue])
 
     const handleChangeMajor = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setPickedMajorValue(Number(event.target.value))
@@ -85,7 +101,11 @@ export const UploadFile = () => {
         formData.append("file", selectedFile);
         formData.append("carrera", pickedMajorValue?.toString() || "");
         formData.append("catedra", pickedSubjectValue?.toString() || "");
+        formData.append("tipo", pickedTypeValue?.toString() || "");
+        formData.append("anio", pickedYearValue?.toString() || "");
+        formData.append("llamado", pickedMonthValue?.toString() || "");
         console.log('formData: ', formData);
+        uploadFile(formData);
     }
 
 

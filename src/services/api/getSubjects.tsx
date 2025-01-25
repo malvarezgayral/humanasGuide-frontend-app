@@ -23,3 +23,13 @@ export const getAllSubjectsBy = async (idCarrera: number) => {
     }
 };
 
+export const getYearsBySubject = async (idCatedra: number) => {
+    try {
+        const response = await axios.get(`http://localhost:8001/subjects/years/${idCatedra}`);
+        console.log('response: ', response);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+};
