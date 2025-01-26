@@ -3,18 +3,17 @@
 import { useEffect, useState } from "react";
 import { fetchMajors } from "@/services/api/getMajors";
 import { getAllSubjectsBy, getYearsBySubject } from "@/services/api/getSubjects";
-import { getAllCalls, getAllTypes, getAllYears } from "@/services/api/getFormData";
 import CustomSelection from "./CustomSelection";
 import { UploadFieldSection } from "./UploadFieldSection";
 import { fetchFileTypes, fetchMonths, uploadFile } from "@/services/api/getFiles";
 
 
 export const UploadFile = () => {
-    const [pickedMajorValue, setPickedMajorValue] = useState<number>();
-    const [pickedSubjectValue, setPickedSubjectValue] = useState<number>();
-    const [pickedTypeValue, setPickedTypeValue] = useState<String>();
-    const [pickedYearValue, setPickedYearValue] = useState<number>();
-    const [pickedMonthValue, setPickedMonthValue] = useState<String>();
+    const [pickedMajorValue, setPickedMajorValue] = useState<number | null>(null);
+    const [pickedSubjectValue, setPickedSubjectValue] = useState<number | null>(null);
+    const [pickedTypeValue, setPickedTypeValue] = useState<String | null>(null);
+    const [pickedYearValue, setPickedYearValue] = useState<number | null>(null);
+    const [pickedMonthValue, setPickedMonthValue] = useState<String | null>(null);
 
     const [carreras, setCarreras] = useState<string[]>([]);
     const [catedras, setCatedras] = useState<string[]>([]);
@@ -33,13 +32,11 @@ export const UploadFile = () => {
                 setCarreras(majors); // updateamos el estado local del componente una vez que la respuesta esperada llegó
                 const typeFiles = await fetchFileTypes();
                 setTypes(typeFiles);
-                const months = await fetchMonths();
-                setMonths(months);
             } catch (error) {
                 console.error("Error fetching majors:", error);
             }
         };
-    
+
         fetchingMajors();
 
         return () => {
@@ -69,6 +66,27 @@ export const UploadFile = () => {
         fetchSubjectYears();
     }, [pickedSubjectValue])
 
+    useEffect(() => {
+        if (pickedTypeValue === "FINAL") {
+            const getMonths = async () => {
+                const months = await fetchMonths();
+                setMonths(months);
+            };
+
+            getMonths();
+
+        } else {
+            console.log('resetting months');
+            setPickedMonthValue(null);
+            setMonths([]);
+            if (pickedTypeValue === "RESUMEN") {
+                setPickedYearValue(null);
+                setYears([]);
+            }
+        }
+
+    }, [pickedTypeValue])
+
     const handleChangeMajor = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setPickedMajorValue(Number(event.target.value))
     }
@@ -89,45 +107,62 @@ export const UploadFile = () => {
         setPickedMonthValue(event.target.value)
     }
 
+    const isMonthValid = () => {
+        return pickedMonthValue && pickedTypeValue === "FINAL" || !pickedMonthValue && pickedTypeValue !== "FINAL";
+    }
+
+    const isYearValid = () => {
+        return pickedYearValue && pickedTypeValue !== "RESUMEN" || !pickedYearValue && pickedTypeValue === "RESUMEN";
+    }
+
+    const isFormValid = () => {
+        return selectedFile && pickedMajorValue && pickedSubjectValue && pickedTypeValue && isYearValid() && isMonthValid();
+    }
+
     const handleSubmit = async () => {
         if (!selectedFile) {
-          setErrorMessage("No se ha seleccionado ningún archivo válido.");
-          return;
+            setErrorMessage("No se ha seleccionado ningún archivo válido.");
+            return;
         }
         console.log('selectedFile: ', selectedFile);
-    
-        // Crear un FormData para enviar el archivo al backend
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append("carrera", pickedMajorValue?.toString() || "");
-        formData.append("catedra", pickedSubjectValue?.toString() || "");
-        formData.append("tipo", pickedTypeValue?.toString() || "");
-        formData.append("anio", pickedYearValue?.toString() || "");
-        formData.append("llamado", pickedMonthValue?.toString() || "");
-        console.log('formData: ', formData);
-        uploadFile(formData);
+
+        if (isFormValid()) {
+            // Crear un FormData para enviar el archivo al backend
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+            formData.append("carrera", pickedMajorValue?.toString() || "");
+            formData.append("catedra", pickedSubjectValue?.toString() || "");
+            formData.append("tipo", pickedTypeValue?.toString() || "");
+            formData.append("anio", pickedYearValue?.toString() || "");
+            formData.append("llamado", pickedMonthValue?.toString() || "");
+            console.log('formData: ', formData);
+            uploadFile(formData);
+        } else {
+            setErrorMessage("El formulario no es válido para el envío.");
+        }
     }
 
 
     return <div className="flex flex-col items-center h-full w-full bg-primaryWhite py-8">
-        <UploadFieldSection handleSubmit={handleSubmit} setErrorMessage={setErrorMessage} errorMessage={errorMessage} setSelectedFile={setSelectedFile} selectedFile={selectedFile}/>
+        <UploadFieldSection handleSubmit={handleSubmit} setErrorMessage={setErrorMessage} errorMessage={errorMessage} setSelectedFile={setSelectedFile} selectedFile={selectedFile} />
         {carreras && carreras.length > 0 && <CustomSelection pickedValue={pickedMajorValue}
             setPickedValue={handleChangeMajor}
             title={'carrera'}
-            iterableOptions={carreras} />}
-        {pickedMajorValue && catedras && catedras.length > 0 && <CustomSelection pickedValue={pickedSubjectValue}
+            iterableOptions={carreras}
+            disable={false} />}
+        <CustomSelection pickedValue={pickedSubjectValue}
             setPickedValue={handleChangeSubject}
             title={'cátedra'}
-            iterableOptions={catedras} />}
-        {types && types.length > 0 && <CustomSelection pickedValue={pickedTypeValue} 
-        setPickedValue={handleChangeType} title={'tipo'} iterableOptions={types} />}
-        {pickedSubjectValue && years && years.length > 0 && <CustomSelection pickedValue={pickedYearValue} 
-        setPickedValue={handleChangeYear} title={'año'} iterableOptions={years} />}
-        {months && months.length > 0 && <CustomSelection pickedValue={pickedMonthValue} 
-        setPickedValue={handleChangeMonth} title={'llamado'} iterableOptions={months} />}
-        {/* <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={catedras} formOptions={catedraForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={types} formOptions={typeForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={years} formOptions={yearForm} />
-        <DropdownForm formData={formData} handleChange={handleChange} iterableOptions={calls} formOptions={callForm} /> */}
+            iterableOptions={catedras}
+            disable={pickedMajorValue == null} />
+        <CustomSelection pickedValue={pickedTypeValue}
+            setPickedValue={handleChangeType} title={'tipo'} iterableOptions={types}
+            disable={false} />
+        <CustomSelection pickedValue={pickedYearValue}
+            setPickedValue={handleChangeYear} title={'año'} iterableOptions={years}
+            disable={pickedTypeValue === "RESUMEN"} />
+        <CustomSelection pickedValue={pickedMonthValue}
+            setPickedValue={handleChangeMonth} title={'llamado'} iterableOptions={months}
+            disable={pickedTypeValue !== "FINAL"} />
     </div>
 }
