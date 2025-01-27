@@ -60,7 +60,7 @@ function HomeComp() {
             iterableOptions={subjects} />}
         </div>
         <div className="flex flex-row justify-around py-5">
-            <Link href="">
+            <Link href="\search">
                 <CustomButton title='Buscar aportes' />
             </Link>
             <Link href="\upload">

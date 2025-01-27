@@ -80,6 +80,7 @@ export const UploadFile = () => {
             setPickedMonthValue(null);
             setMonths([]);
             if (pickedTypeValue === "RESUMEN") {
+                console.log('resetting years');
                 setPickedYearValue(null);
                 setYears([]);
             }

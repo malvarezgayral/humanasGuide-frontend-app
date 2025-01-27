@@ -1,5 +1,27 @@
 import axios from "axios";
 
+export const fetchAllFiles = async () => {  
+    try {
+        const response = await axios.get("http://localhost:8001/files");
+        console.log('response: ', response);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+}
+
+export const fetchAllFilesTable = async () => {
+    try {
+        const response = await axios.get("http://localhost:8001/files/table");
+        console.log('response: ', response);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+}
+
 export const fetchFileTypes = async () => {
     try {
         const response = await axios.get("http://localhost:8001/files/types");
