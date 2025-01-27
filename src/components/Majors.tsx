@@ -27,8 +27,7 @@ export const Majors = () => {
             fetchedMajors.map((major) => (
                 <MajorCard key={major.id}
                     majorName={major.name}
-                    officialPageLink={"no fetching data"}
-                    studyPlanLink={major.planDeEstudios}    
+                    officialPageLink={major.officialPage}   
                 />
             )) 
         }

@@ -39,7 +39,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function MajorCard(props: any) {
   const [expanded, setExpanded] = React.useState(false);
-  const { majorName, officialPageLink, studyPlanLink } = props;
+  const { majorName, officialPageLink } = props;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -65,17 +65,16 @@ export default function MajorCard(props: any) {
       </CardActions>
       </Box>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-            <Link href="/">
-          <Typography sx={{ marginBottom: 2 }}>
-            Listado de cátedras
-          </Typography>
+        <CardContent sx={{ paddingY: 1 }}>
+          <Link href="/">
+            <Typography>
+              Listado de cátedras
+            </Typography>
           </Link>
-          <Typography sx={{ marginBottom: 2 }}>
-            {officialPageLink}
-          </Typography>
-          <Typography sx={{ marginBottom: 2 }}>
-            {studyPlanLink}
+          <Typography>
+            <a href={officialPageLink} target="_blank">
+              Página oficial
+            </a>
           </Typography>
         </CardContent>
       </Collapse>
