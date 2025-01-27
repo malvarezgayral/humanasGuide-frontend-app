@@ -37,9 +37,9 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   ],
 }));
 
-export default function MajorCard() {
+export default function MajorCard(props: any) {
   const [expanded, setExpanded] = React.useState(false);
-  const [majorName, setMajorName] = React.useState<string>("Nombre de la carrera");
+  const { majorName, officialPageLink, studyPlanLink } = props;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -49,7 +49,7 @@ export default function MajorCard() {
     <Card sx={{ maxWidth: 500, backgroundColor: "#DDCFBC", width: '60%' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <CardContent>
-        <Typography variant="h4" sx={{ color: "#18171B" }}>
+        <Typography variant="h5" sx={{ color: "#18171B" }}>
           {majorName}
         </Typography>
       </CardContent>
@@ -72,10 +72,10 @@ export default function MajorCard() {
           </Typography>
           </Link>
           <Typography sx={{ marginBottom: 2 }}>
-            Página oficial
+            {officialPageLink}
           </Typography>
           <Typography sx={{ marginBottom: 2 }}>
-            Plan de estudios
+            {studyPlanLink}
           </Typography>
         </CardContent>
       </Collapse>
