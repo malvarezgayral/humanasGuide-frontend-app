@@ -3,6 +3,6 @@ import { SearchDataTable } from "@/components/SearchDataTable";
 
 export default function UploadPage() {
     return <Layout>
-      <SearchDataTable />
+        <SearchDataTable />
     </Layout>
-  }
+}
