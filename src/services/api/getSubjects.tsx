@@ -12,6 +12,16 @@ export const getSubjects = async () => {
     }
 }
 
+export const getSubjectsNames = async () => {
+    try {
+        const response = await axios.get("http://localhost:8001/subjects/names");
+        console.log('response: ', response);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+}
 export const getAllSubjectsBy = async (idCarrera: number) => {
     try {
         const response = await axios.get(`http://localhost:8001/subjects/major/${idCarrera}`);
