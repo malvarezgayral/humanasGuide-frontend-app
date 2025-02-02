@@ -9,17 +9,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { fetchAllFilesTable, fetchFileTypes } from "@/services/api/getFiles";
 import { getSubjectsNames } from "@/services/api/getSubjects";
-
-interface FileRow {
-    id: number;
-    name: string;
-    subject: string;
-    quarter: number;
-    type: string;
-    uploadDate: string;
-    url: string;
-    month: string;
-}
+import { FileRow } from "@/constants/interfacesAndTypes";
+import columns from "@/constants/table";
 
 export const SearchDataTable = () => {
     const [subjectsOptions, setSubjectsOptions] = React.useState<string[]>([]);
@@ -34,9 +25,24 @@ export const SearchDataTable = () => {
         endDate: null,
     });
 
+    // Actualizar los filtros
+    const handleFilterChange = (field: string, value: any) => {
+        setFilters((prev) => ({ ...prev, [field]: value }));
+    }
+
     React.useEffect(() => {
+        //leemos los parametros de la URL si existen para los filtros
+        const searchParams = new URLSearchParams(window.location.search);
+        const major = searchParams.get('major');
+        const subject = searchParams.get('subject');
+        console.log("major: ", major, "subject: ", subject);
+        if (subject) {
+            handleFilterChange("subject", subject);
+        }
+        /* if (major) {
+            handleFilterChange("major", major);
+        } */
         // Fetch data from API
-    
         const fetchingData = async () => {
             try {
                 const files = await fetchAllFilesTable();
@@ -56,30 +62,24 @@ export const SearchDataTable = () => {
         };
     }, []);
 
-    // Actualizar los filtros
-    const handleFilterChange = (field: string, value: any) => {
-        setFilters((prev) => ({ ...prev, [field]: value }));
-    };
+    
+    const filterRows = (field: string, filtered: FileRow[]) => {
+        if (field) {
+            filtered = filtered.filter((row) =>
+                row.name.toLowerCase().includes(field.toLowerCase())
+            );
+        }
+        return filtered;
+    }
 
     // Filtrar las filas
     React.useEffect(() => {
         let filtered = filesRows;
 
-        if (filters.name) {
-            filtered = filtered.filter((row) =>
-                row.name.toLowerCase().includes(filters.name.toLowerCase())
-            );
-        }
-        if (filters.subject) {
-            filtered = filtered.filter((row) =>
-                row.subject.toLowerCase().includes(filters.subject.toLowerCase())
-            );
-        }
-        if (filters.type) {
-            filtered = filtered.filter((row) =>
-                row.type.toLowerCase().includes(filters.type.toLowerCase())
-            );
-        }
+        filtered = filterRows(filters.name, filtered);
+        filtered = filterRows(filters.subject, filtered);
+        filtered = filterRows(filters.type, filtered);
+
         if (filters.startDate) {
             filtered = filtered.filter(
                 (row) => dayjs(row.uploadDate) >= dayjs(filters.startDate)
@@ -93,17 +93,6 @@ export const SearchDataTable = () => {
 
         setFilteredRows(filtered);
     }, [filters, filesRows]);
-
-    const columns: GridColDef<(typeof filesRows)[number]>[] = [
-        { field: "id", headerName: "ID", width: 0 },
-        { field: "name", headerName: "Nombre del recurso", width: 150 },
-        { field: "subject", headerName: "Cátedra", width: 150 },
-        { field: "quarter", headerName: "Cuatrimestre", type: "number", width: 150 },
-        { field: "type", headerName: "Tipo de recurso", width: 150 },
-        { field: "uploadDate", headerName: "Fecha de subida", width: 110 },
-        { field: "url", headerName: "Link", width: 110 },
-        { field: "month", headerName: "Llamado", sortable: false, width: 160 },
-    ];
 
     return (
         <div className="h-full w-full bg-primaryWhite py-8">

@@ -22,7 +22,7 @@ function AphorismsBoxGenerator(){
         fetchingAph();
 
         return () => {
-            console.log('unmounting');
+            /* console.log('unmounting'); */
         };
     }, [])
 

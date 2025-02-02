@@ -1,7 +1,16 @@
 import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
-function CustomSelection(props: any) {
-    const { setPickedValue, pickedValue, iterableOptions, title, disable } = props;
+interface CustomSelectionProps {
+    setPickedValue: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
+    name: String;
+    id: Number
+    iterableOptions: any[];
+    title: string;
+    disable?: boolean;
+}
+
+function CustomSelection(props: CustomSelectionProps) {
+    const { setPickedValue, name, id, iterableOptions, title, disable } = props;
 
     const transformToName = (value: string | Number) => {
         if (typeof value !== "string") {
@@ -18,22 +27,23 @@ function CustomSelection(props: any) {
             <InputLabel htmlFor="pick-v" id="pickV-label">Selecciona tu {title}</InputLabel>
             <NativeSelect
                 disabled={disable}
-                error={pickedValue === ""}
+                error={name === ""}
                 onErrorCapture={() => "Por favor, selecciona una opción válida."}
                 placeholder={`Selecciona tu ${title}`}
                 inputProps={{
                     name: `Selecciona tu ${title}`,
                     id: 'pick-v',
                 }}
-                value={pickedValue}
+                value={id}
                 onChange={setPickedValue}
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
-                {iterableOptions.map((opt: any) => (
-                    <option key={opt.name || opt} value={opt.id || opt.value || opt}>
-                        {transformToName(opt.name || opt.value || opt)}
-                    </option>
-                ))}
+                {iterableOptions.map((opt: any) => {
+                    console.log('opt: ', opt);
+                    return <option key={opt.name || opt} value={opt.id}>
+                    {opt.name || opt.value || opt}
+                </option>
+                })}
             </NativeSelect>
         </FormControl>
     </div>

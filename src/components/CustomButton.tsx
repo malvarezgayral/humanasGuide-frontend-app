@@ -4,9 +4,9 @@ import { Button } from "@mui/material";
 /* import { PrimaryOrangeBtn } from "@/theme/styledMUI"; */
 
 function CustomButton(props: CustomButtonType) {
-    const { title } = props;
+    const { title, handleEventClick } = props;
 
-    return <Button sx={BtnPrimaryOrange}>{title}</Button>
+    return <Button onClick={handleEventClick} sx={BtnPrimaryOrange}>{title}</Button>
     
 
 }

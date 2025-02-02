@@ -76,11 +76,11 @@ export const UploadFile = () => {
             getMonths();
 
         } else {
-            console.log('resetting months');
+            /* console.log('resetting months'); */
             setPickedMonthValue(null);
             setMonths([]);
             if (pickedTypeValue === "RESUMEN") {
-                console.log('resetting years');
+                /* console.log('resetting years'); */
                 setPickedYearValue(null);
                 setYears([]);
             }
@@ -125,7 +125,7 @@ export const UploadFile = () => {
             setErrorMessage("No se ha seleccionado ningún archivo válido.");
             return;
         }
-        console.log('selectedFile: ', selectedFile);
+        /* console.log('selectedFile: ', selectedFile); */
 
         if (isFormValid()) {
             // Crear un FormData para enviar el archivo al backend
@@ -136,7 +136,7 @@ export const UploadFile = () => {
             formData.append("tipo", pickedTypeValue?.toString() || "");
             formData.append("anio", pickedYearValue?.toString() || "");
             formData.append("llamado", pickedMonthValue?.toString() || "");
-            console.log('formData: ', formData);
+            /* console.log('formData: ', formData); */
             uploadFile(formData);
         } else {
             setErrorMessage("El formulario no es válido para el envío.");
