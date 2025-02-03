@@ -7,6 +7,7 @@ export interface FileRow {
     id: number;
     name: string;
     subject: string;
+    majors: string[];
     quarter: number;
     type: string;
     uploadDate: string;

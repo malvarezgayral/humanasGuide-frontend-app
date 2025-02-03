@@ -27,16 +27,7 @@ function HomeComp() {
     const [fetchedMajors, setFetchedMajors] = useState<any>(null);
     const router = useRouter();
 
-    /* console.log(router) */
-    /* console.log("subjects ", subjects)
-    console.log("major value picked ", pickedMajorValue) */
-
     const handleNavigate = () => {
-        /* const fetchingSubjectName = async () => {
-            const subjectName = await getSubjectNameById(Number(pickedSubject));
-            return subjectName; 
-        }
-        const subjectName = fetchingSubjectName() */
         router.push(`/search?major=${pickedMajorValue.name}&subject=${pickedSubject.name}`)
     }
 
@@ -44,7 +35,6 @@ function HomeComp() {
         const fetchingMajors = async () => {
             try {
                 const data = await fetchMajors(); // manejamos la promesa con async await en este caso
-                /* console.log(data) */
                 setFetchedMajors(data); // updateamos el estado local del componente una vez que la respuesta esperada llegó
             } catch (error) {
                 console.error("Error fetching majors:", error);

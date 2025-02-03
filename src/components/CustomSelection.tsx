@@ -12,7 +12,7 @@ interface CustomSelectionProps {
 function CustomSelection(props: CustomSelectionProps) {
     const { setPickedValue, name, id, iterableOptions, title, disable } = props;
 
-    const transformToName = (value: string | Number) => {
+    /* const transformToName = (value: string | Number) => {
         if (typeof value !== "string") {
             return value.toString();
         }
@@ -20,7 +20,7 @@ function CustomSelection(props: CustomSelectionProps) {
         return value
             .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
-    };
+    }; */
 
     return <div className="py-5">
         <FormControl>
@@ -39,7 +39,6 @@ function CustomSelection(props: CustomSelectionProps) {
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
                 {iterableOptions.map((opt: any) => {
-                    console.log('opt: ', opt);
                     return <option key={opt.name || opt} value={opt.id}>
                     {opt.name || opt.value || opt}
                 </option>
