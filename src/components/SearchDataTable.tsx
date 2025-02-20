@@ -12,14 +12,15 @@ import { getSubjectsNames } from "@/services/api/getSubjects";
 import { FileRow } from "@/constants/interfacesAndTypes";
 import columns from "@/constants/table";
 import { getMajorsNames } from "@/services/api/getMajors";
+import { useEffect, useState } from "react";
 
 export const SearchDataTable = () => {
-    const [subjectsOptions, setSubjectsOptions] = React.useState<string[]>([]);
-    const [majorsOptions, setMajorsOptions] = React.useState<string[]>([]);
-    const [typeFilesOptions, setTypeFilesOptions] = React.useState<string[]>([]);
-    const [filesRows, setFilesRows] = React.useState<FileRow[]>([]);
-    const [filteredRows, setFilteredRows] = React.useState<FileRow[]>([]);
-    const [filters, setFilters] = React.useState({
+    const [subjectsOptions, setSubjectsOptions] = useState<string[]>([]);
+    const [majorsOptions, setMajorsOptions] = useState<string[]>([]);
+    const [typeFilesOptions, setTypeFilesOptions] = useState<string[]>([]);
+    const [filesRows, setFilesRows] = useState<FileRow[]>([]);
+    const [filteredRows, setFilteredRows] = useState<FileRow[]>([]);
+    const [filters, setFilters] = useState({
         name: "",
         subject: "",
         majors: "",
@@ -33,7 +34,7 @@ export const SearchDataTable = () => {
         setFilters((prev) => ({ ...prev, [field]: value }));
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         //leemos los parametros de la URL si existen para los filtros
         const searchParams = new URLSearchParams(window.location.search);
         const major = searchParams.get('major');
@@ -69,7 +70,7 @@ export const SearchDataTable = () => {
         };
     }, []);
 
-    
+
     const filterRows = (field: keyof typeof filters, filtered: FileRow[]) => {
         if (field) {
             filtered = filtered.filter((row) =>
@@ -80,9 +81,9 @@ export const SearchDataTable = () => {
     }
 
     // Filtrar las filas
-    React.useEffect(() => {
+    useEffect(() => {
         let filtered = filesRows;
-        console.log("filesRows temp copy: ", filtered)
+
 
         filtered = filterRows('name', filtered);
         filtered = filterRows('subject', filtered);
@@ -91,7 +92,10 @@ export const SearchDataTable = () => {
         /* filtered = filterRows(filters.major, filtered); */
         if (filters.majors) {
             filtered = filtered.filter(
-                (row) => row.majors.includes(filters.majors)
+                (row) => {
+                    console.log('row:', row)
+                    return row.majors.some(major => major.name.includes(filters.majors))
+                }
             );
 
         }
@@ -105,9 +109,12 @@ export const SearchDataTable = () => {
                 (row) => dayjs(row.uploadDate) <= dayjs(filters.endDate)
             );
         }
+        console.log("filesRows temp copy: ", filtered)
 
         setFilteredRows(filtered);
     }, [filters, filesRows]);
+
+    console.log(filteredRows)
 
     return (
         <div className="h-full w-full bg-primaryWhite py-8">
@@ -197,7 +204,7 @@ export const SearchDataTable = () => {
                         },
                     }}
                     pageSizeOptions={[5]}
-                    checkboxSelection
+                    /* checkboxSelection */
                     disableRowSelectionOnClick
                 />
             </Box>
