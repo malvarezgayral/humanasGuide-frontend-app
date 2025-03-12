@@ -2,8 +2,8 @@ import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
 interface CustomSelectionProps {
     setPickedValue: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
-    name: String;
-    id: Number
+    name?: String;
+    id: Number | String;
     iterableOptions: any[];
     title: string;
     disable?: boolean;

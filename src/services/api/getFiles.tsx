@@ -45,8 +45,9 @@ export const fetchMonths = async () => {
 };
 
 export const uploadFile = async (formData: any) => {
+    console.log(formData.get('file'));
     try {
-        const response = await axios.post("http://localhost:8001/files", formData);
+        const response = await axios.post("http://localhost:8001/files/save", formData);
         /* console.log('response: ', response); */
         return response.data;
     } catch (error) {

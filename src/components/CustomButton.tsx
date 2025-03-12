@@ -7,8 +7,6 @@ function CustomButton(props: CustomButtonType) {
     const { title, handleEventClick } = props;
 
     return <Button onClick={handleEventClick} sx={BtnPrimaryOrange}>{title}</Button>
-    
-
 }
 
 export default CustomButton;

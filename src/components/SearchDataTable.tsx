@@ -99,7 +99,7 @@ export const SearchDataTable = () => {
             );
 
         }
-        if (filters.startDate) {
+        /* if (filters.startDate) {
             filtered = filtered.filter(
                 (row) => dayjs(row.uploadDate) >= dayjs(filters.startDate)
             );
@@ -108,7 +108,7 @@ export const SearchDataTable = () => {
             filtered = filtered.filter(
                 (row) => dayjs(row.uploadDate) <= dayjs(filters.endDate)
             );
-        }
+        } */
         console.log("filesRows temp copy: ", filtered)
 
         setFilteredRows(filtered);
