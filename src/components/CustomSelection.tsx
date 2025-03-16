@@ -1,32 +1,48 @@
 import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
-function CustomSelection(props: any) {
-    const { setPickedValue, pickedValue, iterableOptions, title } = props;
+interface CustomSelectionProps {
+    setPickedValue: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
+    name?: String;
+    id: Number | String;
+    iterableOptions: any[];
+    title: string;
+    disable?: boolean;
+}
 
-    const transformToName = (value: String) => {
+function CustomSelection(props: CustomSelectionProps) {
+    const { setPickedValue, name, id, iterableOptions, title, disable } = props;
+
+    /* const transformToName = (value: string | Number) => {
+        if (typeof value !== "string") {
+            return value.toString();
+        }
+
         return value
-          .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
-          .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
-      };
+            .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
+    }; */
 
     return <div className="py-5">
         <FormControl>
             <InputLabel htmlFor="pick-v" id="pickV-label">Selecciona tu {title}</InputLabel>
             <NativeSelect
+                disabled={disable}
+                error={name === ""}
+                onErrorCapture={() => "Por favor, selecciona una opción válida."}
                 placeholder={`Selecciona tu ${title}`}
                 inputProps={{
                     name: `Selecciona tu ${title}`,
                     id: 'pick-v',
                 }}
-                value={pickedValue}
+                value={id}
                 onChange={setPickedValue}
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
-                {iterableOptions.map((opt: any) => (
-                    <option key={opt.name} value={opt.id}>
-                        {transformToName(opt.name)}
-                    </option>
-                ))}
+                {iterableOptions.map((opt: any) => {
+                    return <option key={opt.name || opt} value={opt.id}>
+                    {opt.name || opt.value || opt}
+                </option>
+                })}
             </NativeSelect>
         </FormControl>
     </div>
