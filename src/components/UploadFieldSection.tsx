@@ -31,16 +31,17 @@ export const UploadFieldSection = (props: any) => {
         }
     };
 
-    return <><div>
-        Sube tu aporte
-    </div>
-        <div className="mt-4">
+    console.log(errorMessage !== null)
+
+    return <>
+        <div className="pt-4">
             <input
                 type="file"
                 accept=".pdf,.odt,.docx"
                 onChange={handleFileChange}
+                className="border-solid border-primaryOrange border-2 rounded w-[158px]"
             />
-            {errorMessage && (
+            {errorMessage !== null && (
                 <p className="text-red-500 mt-2">{errorMessage}</p>
             )}
         </div>
@@ -55,7 +56,7 @@ export const UploadFieldSection = (props: any) => {
             </div>
         )}
         <button
-            className="bg-blue-500 text-white px-4 py-2 mt-4 rounded"
+            className="bg-primaryOrange text-white px-4 py-2 mt-4 rounded"
             onClick={handleSubmit}
         >
             Enviar

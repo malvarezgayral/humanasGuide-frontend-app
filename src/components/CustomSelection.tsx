@@ -1,3 +1,4 @@
+import { InputLabelPrimary, NativeSelectPrimary } from "@/theme/sx";
 import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
 interface CustomSelectionProps {
@@ -22,9 +23,9 @@ function CustomSelection(props: CustomSelectionProps) {
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
     }; */
 
-    return <div className="py-5">
+    return <div className="py-5 w-[200px]">
         <FormControl>
-            <InputLabel htmlFor="pick-v" id="pickV-label">Selecciona tu {title}</InputLabel>
+            <InputLabel htmlFor="pick-v" id="pickV-label" sx={InputLabelPrimary}>Selecciona tu {title}</InputLabel>
             <NativeSelect
                 disabled={disable}
                 error={name === ""}
@@ -34,6 +35,7 @@ function CustomSelection(props: CustomSelectionProps) {
                     name: `Selecciona tu ${title}`,
                     id: 'pick-v',
                 }}
+                sx={NativeSelectPrimary}
                 value={id}
                 onChange={setPickedValue}
             >

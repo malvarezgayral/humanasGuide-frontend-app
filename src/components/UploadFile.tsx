@@ -23,7 +23,7 @@ export const UploadFile = () => {
         year: 0
     });
     const [pickedTypeValue, setPickedTypeValue] = useState<String>("");
-    const [pickedYearValue, setPickedYearValue] = useState<Number>();
+    const [pickedYearValue, setPickedYearValue] = useState<Number>(0);
     const [pickedMonthValue, setPickedMonthValue] = useState<String>("");
 
     const [carreras, setCarreras] = useState([]);
@@ -95,7 +95,7 @@ export const UploadFile = () => {
             setMonths([]);
             if (pickedTypeValue === "RESUMEN") {
                 /* console.log('resetting years'); */
-                setPickedYearValue(undefined);
+                setPickedYearValue(0);
                 setYears([]);
             }
         }
@@ -167,43 +167,52 @@ export const UploadFile = () => {
     }
 
 
-    return <div className="flex flex-col items-center h-full w-full bg-primaryWhite py-8">
-        <UploadFieldSection handleSubmit={handleSubmit} setErrorMessage={setErrorMessage}
-            errorMessage={errorMessage}
-            setSelectedFile={setSelectedFile}
-            selectedFile={selectedFile} />
-        {carreras && carreras.length > 0 &&
-            <CustomSelection
-                name={pickedMajorValue.name}
-                id={pickedMajorValue.id}
-                setPickedValue={handleChangeMajor}
-                title={'carrera'}
-                iterableOptions={carreras}
-                disable={false} />}
-        <CustomSelection
-            name={pickedSubjectValue.name}
-            id={pickedSubjectValue.id}
-            setPickedValue={handleChangeSubject}
-            title={'cátedra'}
-            iterableOptions={catedras}
-            disable={pickedMajorValue == null} />
-        <CustomSelection
-            id={pickedTypeValue}
-            setPickedValue={handleChangeType}
-            title={'tipo'}
-            iterableOptions={types}
-            disable={false} />
-        <CustomSelection
-            id={pickedYearValue}
-            setPickedValue={handleChangeYear} 
-            title={'año'} 
-            iterableOptions={years}
-            disable={pickedTypeValue === "RESUMEN"} />
-        <CustomSelection
-            id={pickedMonthValue}
-            setPickedValue={handleChangeMonth} 
-            title={'llamado'} 
-            iterableOptions={months}
-            disable={pickedTypeValue !== "FINAL"} />
-    </div>
+    return <>
+        <div className=" bg-primaryWhite w-full flex justify-center pt-12">
+            <p className="text-primaryBlack font-thin text-3xl">Sube tu aporte</p>
+        </div>
+        <div className="flex flex-row items-center h-96 w-full bg-primaryWhite">
+            <div className="w-1/3 pl-8">
+                <UploadFieldSection handleSubmit={handleSubmit} setErrorMessage={setErrorMessage}
+                    errorMessage={errorMessage}
+                    setSelectedFile={setSelectedFile}
+                    selectedFile={selectedFile} />
+            </div>
+            <div className="w-2/3 flex flex-wrap gap-8">
+                {carreras && carreras.length > 0 &&
+                    <CustomSelection
+                        name={pickedMajorValue.name}
+                        id={pickedMajorValue.id}
+                        setPickedValue={handleChangeMajor}
+                        title={'carrera'}
+                        iterableOptions={carreras}
+                        disable={false} />}
+                <CustomSelection
+                    name={pickedSubjectValue.name}
+                    id={pickedSubjectValue.id}
+                    setPickedValue={handleChangeSubject}
+                    title={'cátedra'}
+                    iterableOptions={catedras}
+                    disable={pickedMajorValue.name === ""} />
+                <CustomSelection
+                    id={pickedTypeValue}
+                    setPickedValue={handleChangeType}
+                    title={'tipo'}
+                    iterableOptions={types}
+                    disable={false} />
+                <CustomSelection
+                    id={pickedYearValue}
+                    setPickedValue={handleChangeYear}
+                    title={'año'}
+                    iterableOptions={years}
+                    disable={pickedTypeValue === "RESUMEN" || pickedMajorValue.name === ""} />
+                <CustomSelection
+                    id={pickedMonthValue}
+                    setPickedValue={handleChangeMonth}
+                    title={'llamado'}
+                    iterableOptions={months}
+                    disable={pickedTypeValue !== "FINAL"} />
+            </div>
+        </div>
+    </>
 }
