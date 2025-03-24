@@ -9,7 +9,7 @@ function Footer() {
 
         <div className="flex flex-col items-center py-3">
             <p className="font-bold text-lg pb-2">Mapa del sitio</p>
-            <a href="">Carreras</a>
+            <a href="/majors">Carreras</a>
             <a href="">Buscar aportes</a>
             <a href="/upload">Subir aportes</a>
         </div>
