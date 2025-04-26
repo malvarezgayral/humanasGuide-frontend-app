@@ -119,15 +119,7 @@ export const SearchDataTable = () => {
     return (
         <div className="h-full w-full bg-primaryWhite py-8">
             {/* Sección de Filtros */}
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 2,
-                    mb: 2,
-                    flexWrap: "wrap",
-                    justifyContent: "space-between",
-                }}
-            >
+            <div className="px-8 py-2 flex flex-row gap-3">
                 {/* Filtro por Nombre */}
                 <TextField
                     label="Nombre del recurso"
@@ -189,25 +181,23 @@ export const SearchDataTable = () => {
                         )}
                     />
                 </LocalizationProvider> */}
-            </Box>
-
-            {/* Tabla */}
-            <Box sx={{ height: 400, width: "100%" }}>
-                <DataGrid
-                    rows={filteredRows}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
+            </div>
+            <div className="mx-8 my-2 h-[370px] w-[1460px] border-2 border-solid rounded-lg">  {/* Tabla */}
+                    <DataGrid
+                        rows={filteredRows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 5,
+                                },
                             },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                    /* checkboxSelection */
-                    disableRowSelectionOnClick
-                />
-            </Box>
+                        }}
+                        pageSizeOptions={[5]}
+                        /* checkboxSelection */
+                        disableRowSelectionOnClick
+                    />
+            </div>
         </div>
     );
 };

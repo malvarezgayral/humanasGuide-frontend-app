@@ -1,106 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchMajors } from "@/services/api/getMajors";
-import { getAllSubjectsBy, getYearsBySubject } from "@/services/api/getSubjects";
 import CustomSelection from "./CustomSelection";
 import { UploadFieldSection } from "./UploadFieldSection";
-import { fetchFileTypes, fetchMonths, uploadFile } from "@/services/api/getFiles";
+import { uploadFile } from "@/services/api/getFiles";
+import { useUploadService } from "@/hooks/uploadFile/useUploadService";
+import { useForm } from "@/hooks/uploadFile/useForm";
 
 
 export const UploadFile = () => {
-    const [pickedMajorValue, setPickedMajorValue] = useState({
-        anio_inicio: 0,
-        id: 0,
-        name: "",
-        officialPage: ""
-    });
-    const [pickedSubjectValue, setPickedSubjectValue] = useState({
-        id: 0,
-        majorIds: [],
-        name: "",
-        quarter: 0,
-        year: 0
-    });
-    const [pickedTypeValue, setPickedTypeValue] = useState<String>("");
-    const [pickedYearValue, setPickedYearValue] = useState<Number>(0);
-    const [pickedMonthValue, setPickedMonthValue] = useState<String>("");
+    const { carreras, catedras, years, months, types, fetchSubjectYears, fetchSubjects, isLoading } = useUploadService()
+    const { pickedMajorValue, pickedSubjectValue, pickedMonthValue, pickedTypeValue, pickedYearValue, setPickedMajorValue,
+        setPickedMonthValue, setPickedSubjectValue, setPickedYearValue, setSelectedFile, setPickedTypeValue, errorMessage,
+        setErrorMessage, selectedFile, isFormValid
+    } = useForm()
 
-    const [carreras, setCarreras] = useState([]);
-    const [catedras, setCatedras] = useState([]);
-    const [types, setTypes] = useState<string[]>([]);
-    const [years, setYears] = useState<number[]>([]);
-    const [months, setMonths] = useState<string[]>([]);
-
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    useEffect(() => {
-        // Fetch data from API
-        const fetchingMajors = async () => {
-            try {
-                const majors = await fetchMajors(); // manejamos la promesa con async await en este caso
-                setCarreras(majors); // updateamos el estado local del componente una vez que la respuesta esperada llegó
-                const typeFiles = await fetchFileTypes();
-                console.log('typeFiles: ', typeFiles);
-                setTypes(typeFiles);
-            } catch (error) {
-                console.error("Error fetching majors:", error);
-            }
-        };
-
-        fetchingMajors();
-
-        return () => {
-            console.log('unmounting');
-        };
-    }, []);
-
-    useEffect(() => {
-        const fetchSubjects = async () => {
-            if (pickedMajorValue) {
-                const catedras = await getAllSubjectsBy(pickedMajorValue.id);
-                setCatedras(catedras);
-            }
-        };
-
-        fetchSubjects();
-    }, [pickedMajorValue])
-
-    useEffect(() => {
-        const fetchSubjectYears = async () => {
-            if (pickedSubjectValue) {
-                const years = await getYearsBySubject(pickedSubjectValue.id);
-                console.log('years: ', years);
-                setYears(years);
-            }
-        };
-
-        fetchSubjectYears();
-    }, [pickedSubjectValue])
-
-    useEffect(() => {
-        if (pickedTypeValue === "FINAL") {
-            const getMonths = async () => {
-                const months = await fetchMonths();
-                console.log('months: ', months);
-                setMonths(months);
-            };
-
-            getMonths();
-
-        } else {
-            /* console.log('resetting months'); */
-            setPickedMonthValue("");
-            setMonths([]);
-            if (pickedTypeValue === "RESUMEN") {
-                /* console.log('resetting years'); */
-                setPickedYearValue(0);
-                setYears([]);
-            }
-        }
-
-    }, [pickedTypeValue])
 
     const handleChangeMajor = (event: any) => {
         if (carreras) {
@@ -111,12 +25,20 @@ export const UploadFile = () => {
         }
     }
 
+    useEffect(() => {
+        fetchSubjects(pickedMajorValue.id)
+    }, [pickedMajorValue.id])
+
     const handleChangeSubject = (event: any) => {
         const selectedSubject = catedras.find((subject: { id: number; }) => subject.id === Number(event.target.value));
         if (selectedSubject) {
             setPickedSubjectValue(selectedSubject);
         }
     }
+
+    useEffect(() => {
+        fetchSubjectYears(pickedSubjectValue.id);
+    }, [pickedSubjectValue.id])
 
     const handleChangeType = (event: any) => {
         setPickedTypeValue(event.target.value)
@@ -130,18 +52,6 @@ export const UploadFile = () => {
         setPickedMonthValue(event.target.value)
     }
 
-    const isMonthValid = () => {
-        return pickedMonthValue && pickedTypeValue === "FINAL" || !pickedMonthValue && pickedTypeValue !== "FINAL";
-    }
-
-    const isYearValid = () => {
-        return pickedYearValue && pickedTypeValue !== "RESUMEN" || !pickedYearValue && pickedTypeValue === "RESUMEN";
-    }
-
-    const isFormValid = () => {
-        return selectedFile && pickedMajorValue && pickedSubjectValue && pickedTypeValue && isYearValid() && isMonthValid();
-    }
-
     const handleSubmit = async () => {
         if (!selectedFile) {
             setErrorMessage("No se ha seleccionado ningún archivo válido.");
@@ -149,7 +59,7 @@ export const UploadFile = () => {
         }
         /* console.log('selectedFile: ', selectedFile); */
 
-        if (isFormValid()) {
+        if (isFormValid) {
             console.log(pickedSubjectValue)
             console.log(pickedYearValue)
             // Crear un FormData para enviar el archivo al backend
@@ -166,7 +76,6 @@ export const UploadFile = () => {
         }
     }
 
-
     return <>
         <div className=" bg-primaryWhite w-full flex justify-center pt-12">
             <p className="text-primaryBlack font-thin text-3xl">Sube tu aporte</p>
@@ -179,39 +88,40 @@ export const UploadFile = () => {
                     selectedFile={selectedFile} />
             </div>
             <div className="w-2/3 flex flex-wrap gap-8">
-                {carreras && carreras.length > 0 &&
+                {!isLoading && <>
                     <CustomSelection
                         name={pickedMajorValue.name}
                         id={pickedMajorValue.id}
                         setPickedValue={handleChangeMajor}
                         title={'carrera'}
                         iterableOptions={carreras}
-                        disable={false} />}
-                <CustomSelection
-                    name={pickedSubjectValue.name}
-                    id={pickedSubjectValue.id}
-                    setPickedValue={handleChangeSubject}
-                    title={'cátedra'}
-                    iterableOptions={catedras}
-                    disable={pickedMajorValue.name === ""} />
-                <CustomSelection
-                    id={pickedTypeValue}
-                    setPickedValue={handleChangeType}
-                    title={'tipo'}
-                    iterableOptions={types}
-                    disable={false} />
-                <CustomSelection
-                    id={pickedYearValue}
-                    setPickedValue={handleChangeYear}
-                    title={'año'}
-                    iterableOptions={years}
-                    disable={pickedTypeValue === "RESUMEN" || pickedMajorValue.name === ""} />
-                <CustomSelection
-                    id={pickedMonthValue}
-                    setPickedValue={handleChangeMonth}
-                    title={'llamado'}
-                    iterableOptions={months}
-                    disable={pickedTypeValue !== "FINAL"} />
+                        disable={false} />
+                    <CustomSelection
+                        name={pickedSubjectValue.name}
+                        id={pickedSubjectValue.id}
+                        setPickedValue={handleChangeSubject}
+                        title={'cátedra'}
+                        iterableOptions={catedras}
+                        disable={pickedMajorValue.name === ""} />
+                    <CustomSelection
+                        id={pickedTypeValue}
+                        setPickedValue={handleChangeType}
+                        title={'tipo'}
+                        iterableOptions={types}
+                        disable={false} />
+                    <CustomSelection
+                        id={pickedYearValue}
+                        setPickedValue={handleChangeYear}
+                        title={'año'}
+                        iterableOptions={years}
+                        disable={pickedTypeValue === "RESUMEN" || pickedMajorValue.name === ""} />
+                    <CustomSelection
+                        id={pickedMonthValue}
+                        setPickedValue={handleChangeMonth}
+                        title={'llamado'}
+                        iterableOptions={months}
+                        disable={pickedTypeValue !== "FINAL"} />
+                </>}
             </div>
         </div>
     </>

@@ -72,7 +72,7 @@ function HomeComp() {
     }
 
     return <div className="h-full w-full bg-primaryWhite py-8">
-        <AphorismsBoxGenerator />
+        {/* <AphorismsBoxGenerator /> */}
         <div className="w-full flex flex-col items-center">
             {fetchedMajors && fetchedMajors.length > 0 && <CustomSelection
                 name={pickedMajorValue.name}
@@ -87,7 +87,7 @@ function HomeComp() {
                 title={'cátedra'}
                 iterableOptions={subjects} />}
         </div>
-        <div className="flex flex-row justify-around py-5">
+        <div className="h-48 w-full flex flex-row justify-center items-center gap-14 py-5">
             <div>
                 <CustomButton handleEventClick={handleNavigate} title='Buscar aportes' />
             </div>
