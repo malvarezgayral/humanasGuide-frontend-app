@@ -6,7 +6,6 @@ import CustomSelection from "./CustomSelection";
 import { getAllSubjectsBy, getSubjectNameById } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
 import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function HomeComp() {
@@ -25,6 +24,7 @@ function HomeComp() {
     });
     const [subjects, setSubjects] = useState<any>([])
     const [fetchedMajors, setFetchedMajors] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const router = useRouter();
 
     const handleNavigate = () => {
@@ -36,6 +36,7 @@ function HomeComp() {
             try {
                 const data = await fetchMajors(); // manejamos la promesa con async await en este caso
                 setFetchedMajors(data); // updateamos el estado local del componente una vez que la respuesta esperada llegó
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching majors:", error);
             }
@@ -71,10 +72,18 @@ function HomeComp() {
         }
     }
 
+    const handleNavigateToSearch = () => {
+        router.push(`/search?major=${pickedMajorValue.name}&subject=${pickedSubject.name}`)
+    }
+
+    const handleNavigateToUpload = () => {
+        router.push(`/upload?major=${pickedMajorValue.name}&subject=${pickedSubject.name}`)
+    }
+
     return <div className="h-full w-full bg-primaryWhite py-8">
         {/* <AphorismsBoxGenerator /> */}
         <div className="w-full flex flex-col items-center">
-            {fetchedMajors && fetchedMajors.length > 0 && <CustomSelection
+            {!isLoading && <CustomSelection
                 name={pickedMajorValue.name}
                 id={pickedMajorValue.id}
                 setPickedValue={handleChangeMajor}
@@ -88,12 +97,12 @@ function HomeComp() {
                 iterableOptions={subjects} />}
         </div>
         <div className="h-48 w-full flex flex-row justify-center items-center gap-14 py-5">
-            <Link href="\search">
+            <div onClick={handleNavigateToSearch}>
                 <CustomButton handleEventClick={handleNavigate} title='Buscar aportes' />
-            </Link>
-            <Link href="\upload">
+            </div>
+            <div onClick={handleNavigateToUpload}>
                 <CustomButton handleEventClick={() => console.log('')} title='Subir aporte' />
-            </Link>
+            </div>
         </div>
     </div>
 }

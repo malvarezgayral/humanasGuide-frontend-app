@@ -12,31 +12,20 @@ export const useTableService = () => {
     const [filteredRows, setFilteredRows] = useState<FileRow[]>([]);
 
     useEffect(() => {
-        //leemos los parametros de la URL si existen para los filtros
-        /* const searchParams = new URLSearchParams(window.location.search);
-        const major = searchParams.get('major');
-        const subject = searchParams.get('subject');
-    
-        if (subject) {
-            handleFilterChange("subject", subject);
-        }
-        if (major) {
-            handleFilterChange("majors", major);
-        } */
         // Fetch data from API
         const fetchingData = async () => {
             try {
-                const files = await fetchAllFilesTable();
-                const typeFiles = await fetchFileTypes();
-                const subjects = await getSubjectsNames();
-                const majors = await getMajorsNames();
-                /* console.log(subjects);
-                console.log(majors); */
-                setFilesRows(files);
-                setFilteredRows(files); // Inicialmente sin filtros
-                setSubjectsOptions(subjects);
-                setMajorsOptions(majors);
-                setTypeFilesOptions(typeFiles);
+                Promise.all([fetchAllFilesTable(), fetchFileTypes(), getSubjectsNames(), getMajorsNames()]).then((values) => {
+                    const files = values[0]
+                    const typeFiles = values[1]
+                    const subjects = values[2]
+                    const majors = values[3]
+                    setFilesRows(files);
+                    setFilteredRows(files); // Inicialmente sin filtros
+                    setSubjectsOptions(subjects);
+                    setMajorsOptions(majors);
+                    setTypeFilesOptions(typeFiles);
+                })
             } catch (error) {
                 console.error("Error fetching majors:", error);
             }

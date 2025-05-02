@@ -11,6 +11,28 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         endDate: null,
     });
 
+    // Actualizar los filtros
+        const handleFilterChange = (field: keyof FileRow | 'name' | 'subject' | 'majors' | 'type' | 'startDate' | 'endDate', value: any) => {
+            setFilters((prev) => ({ ...prev, [field]: value }));
+        }
+    
+        useEffect(() => {
+            //leemos los parametros de la URL si existen para los filtros
+            const searchParams = new URLSearchParams(window.location.search);
+            console.log("searchParams: ", searchParams)
+            const major = searchParams.get('major');
+            const subject = searchParams.get('subject');
+            console.log("major: ", major)
+            console.log("subject: ", subject)
+    
+            if (subject) {
+                handleFilterChange("subject", subject);
+            }
+            if (major) {
+                handleFilterChange("majors", major);
+            }
+        }, []);
+
     const filterRows = (field: keyof typeof filters, filtered: FileRow[]) => {
         if (field) {
             filtered = filtered.filter((row) =>
@@ -51,5 +73,5 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         setFilteredRows(filtered);
     }, [filters, filesRows]);
 
-    return { filters, setFilters };
+    return { filters, setFilters, handleFilterChange };
 }

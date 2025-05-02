@@ -14,14 +14,10 @@ import { useTableService } from "@/hooks/searchTable/useTableService";
 import { useFilter } from "@/hooks/searchTable/useFilter";
 
 export const SearchDataTable = () => {
+    
+
     const { subjectsOptions, majorsOptions, typeFilesOptions, filesRows, filteredRows, setFilteredRows } = useTableService()
-    const { filters, setFilters } = useFilter(filesRows, filteredRows, setFilteredRows)
-
-    // Actualizar los filtros
-    const handleFilterChange = (field: keyof FileRow | 'name' | 'subject' | 'majors' | 'type' | 'startDate' | 'endDate', value: any) => {
-        setFilters((prev) => ({ ...prev, [field]: value }));
-    }
-
+    const { filters, handleFilterChange } = useFilter(filesRows, filteredRows, setFilteredRows)
 
     return (
         <div className="h-full w-full bg-primaryWhite py-8">
