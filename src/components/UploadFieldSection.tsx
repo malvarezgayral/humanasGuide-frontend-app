@@ -31,8 +31,6 @@ export const UploadFieldSection = (props: any) => {
         }
     };
 
-    console.log(errorMessage !== null)
-
     return <>
         <div className="pt-4">
             <input

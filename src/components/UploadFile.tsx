@@ -60,8 +60,8 @@ export const UploadFile = () => {
         /* console.log('selectedFile: ', selectedFile); */
 
         if (isFormValid) {
-            console.log(pickedSubjectValue)
-            console.log(pickedYearValue)
+            /* console.log(pickedSubjectValue)
+            console.log(pickedYearValue) */
             // Crear un FormData para enviar el archivo al backend
             const formData = new FormData();
             formData.append("file", selectedFile);

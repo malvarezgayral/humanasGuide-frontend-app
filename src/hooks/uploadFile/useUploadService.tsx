@@ -52,7 +52,6 @@ export const useUploadService = () => {
         setFileFields(prev => ({ ...prev, years: years }));
     }
 
-    console.log("majors: ", fileFields.carreras)
     return {
         carreras: fileFields.carreras, catedras: fileFields.catedras, years: fileFields.years,
         types: fileFields.types, months: fileFields.meses, fetchSubjects, fetchSubjectYears, isLoading

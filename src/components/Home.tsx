@@ -88,9 +88,9 @@ function HomeComp() {
                 iterableOptions={subjects} />}
         </div>
         <div className="h-48 w-full flex flex-row justify-center items-center gap-14 py-5">
-            <div>
+            <Link href="\search">
                 <CustomButton handleEventClick={handleNavigate} title='Buscar aportes' />
-            </div>
+            </Link>
             <Link href="\upload">
                 <CustomButton handleEventClick={() => console.log('')} title='Subir aporte' />
             </Link>

@@ -41,7 +41,7 @@ function CustomSelection(props: CustomSelectionProps) {
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
                 {iterableOptions.map((opt: any) => {
-                    return <option key={opt.name || opt} value={opt.id}>
+                    return <option key={opt.id} value={opt.id}>
                     {opt.name || opt.value || opt}
                 </option>
                 })}
