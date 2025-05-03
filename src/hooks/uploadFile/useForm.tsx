@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
 export const useForm = () => {
-    const [pickedMajorValue, setPickedMajorValue] = useState({
+    const [pickedMajorValue, setPickedMajorValue] = useState<any>({
         anio_inicio: 0,
         id: 0,
         name: "",
         officialPage: ""
     });
-    const [pickedSubjectValue, setPickedSubjectValue] = useState({
+    const [pickedSubjectValue, setPickedSubjectValue] = useState<any>({
         id: 0,
         majorIds: [],
         name: "",

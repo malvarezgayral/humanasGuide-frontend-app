@@ -19,3 +19,13 @@ export const getMajorsNames = async () => {
         console.error(error);
     }
 }
+
+export const getMajorByName = async (name: string) => {
+    try {
+        const response = await axios.get(`http://localhost:8001/majors/name/${name}`);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+}

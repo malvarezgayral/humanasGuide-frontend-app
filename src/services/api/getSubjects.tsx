@@ -43,6 +43,19 @@ export const getSubjectNameById = async (idMateria: number) => {
     }
 }
 
+export const getSubjectByName = async (name: string) => {
+    try {
+        const encodedName = encodeURIComponent(name);
+        console.log("encodedName: ", encodedName)
+        const response = await axios.get(`http://localhost:8001/subjects/name/${encodedName}`);
+        console.log('response: ', response);
+        return response.data;
+    } catch (error) {
+        // Handle error
+        console.error(error);
+    }
+};
+
 export const getYearsBySubject = async (idCatedra: number) => {
     try {
         const response = await axios.get(`http://localhost:8001/subjects/years/${idCatedra}`);

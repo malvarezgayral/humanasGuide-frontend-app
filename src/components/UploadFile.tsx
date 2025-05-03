@@ -6,6 +6,8 @@ import { UploadFieldSection } from "./UploadFieldSection";
 import { uploadFile } from "@/services/api/getFiles";
 import { useUploadService } from "@/hooks/uploadFile/useUploadService";
 import { useForm } from "@/hooks/uploadFile/useForm";
+import { getMajorByName } from "@/services/api/getMajors";
+import { getSubjectByName } from "@/services/api/getSubjects";
 
 
 export const UploadFile = () => {
@@ -35,6 +37,50 @@ export const UploadFile = () => {
             setPickedSubjectValue(selectedSubject);
         }
     }
+
+    useEffect(() => {
+        async function fetchMajorByName(majorName: string) {
+            try {
+                const major = await getMajorByName(majorName);
+                if (major) {
+                    console.log("major: ", major)
+                    setPickedMajorValue(major);
+                } else {
+                    console.error("Major not found:", majorName);
+                }
+            } catch (error) {
+                console.error("Error fetching major by name:", error);
+            }
+        }
+        async function fetchSubjectByName(subjectName: string) {
+            try {
+                const subject = await getSubjectByName(subjectName);
+                console.log("subject: ", subject)
+                if (subject) {
+                    //console.log("subject: ", subject)
+                    setPickedSubjectValue(subject);
+                } else {
+                    console.error("Subject not found:", subjectName);
+                }
+            } catch (error) {
+                console.error("Error fetching subject by name:", error);
+            }
+        }
+        //leemos los parametros de la URL si existen para los filtros
+        const searchParams = new URLSearchParams(window.location.search);
+        const major = searchParams.get('major');
+        const subject = searchParams.get('subject');
+    
+        if (major) {
+            //console.log("major: ", major)
+            fetchMajorByName(major)
+        }
+        if (subject) {
+            console.log("subject: ", subject)
+            fetchSubjectByName(subject);
+        }
+
+    }, []);
 
     useEffect(() => {
         fetchSubjectYears(pickedSubjectValue.id);
@@ -75,6 +121,9 @@ export const UploadFile = () => {
             setErrorMessage("El formulario no es válido para el envío.");
         }
     }
+
+    //console.log("pickedMajorValue: ", pickedMajorValue)
+    //console.log("pickedSubjectValue: ", pickedSubjectValue)
 
     return <>
         <div className=" bg-primaryWhite w-full flex justify-center pt-12">
