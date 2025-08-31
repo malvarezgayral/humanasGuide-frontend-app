@@ -105,13 +105,13 @@ export const UploadFile = () => {
         }
         /* console.log('selectedFile: ', selectedFile); */
 
-        if (isFormValid) {
+        if (typeof isFormValid === 'function' ? isFormValid() : Boolean(isFormValid)) {
             /* console.log(pickedSubjectValue)
             console.log(pickedYearValue) */
             // Crear un FormData para enviar el archivo al backend
             const formData = new FormData();
             formData.append("file", selectedFile);
-            formData.append("catedra", pickedSubjectValue?.id.toString() || "");
+            formData.append("catedraId", pickedSubjectValue?.id.toString() || "");
             formData.append("tipo", pickedTypeValue?.toString() || "");
             formData.append("anio", pickedYearValue?.toString() || "");
             formData.append("llamado", pickedMonthValue?.toString() || "");

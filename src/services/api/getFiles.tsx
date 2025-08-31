@@ -44,14 +44,17 @@ export const fetchMonths = async () => {
     }
 };
 
-export const uploadFile = async (formData: any) => {
+export const uploadFile = async (formData: FormData) => {
     console.log(formData.get('file'));
     try {
-        const response = await axios.post("http://localhost:8001/files/save", formData);
+        const response = await axios.post("http://localhost:8001/files/save", formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
         /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error
         console.error(error);
+        throw error;
     }
-}	
+}

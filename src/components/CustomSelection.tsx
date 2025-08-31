@@ -3,9 +3,9 @@ import { FormControl, InputLabel, NativeSelect } from "@mui/material";
 
 interface CustomSelectionProps {
     setPickedValue: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
-    name?: String;
-    id: Number | String;
-    iterableOptions: any[];
+    name?: string;
+    id: number | string | undefined;
+    iterableOptions?: any[];
     title: string;
     disable?: boolean;
 }
@@ -40,10 +40,11 @@ function CustomSelection(props: CustomSelectionProps) {
                 onChange={setPickedValue}
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
-                {iterableOptions.map((opt: any) => {
-                    return <option key={opt.id} value={opt.id}>
-                    {opt.name || opt.value || opt}
-                </option>
+                {(iterableOptions ?? []).map((opt: any, idx: number) => {
+                    const key = (opt?.id ?? opt?.value ?? opt ?? idx) as string | number;
+                    const value = (opt?.id ?? opt?.value ?? opt ?? '') as string | number;
+                    const label = (opt?.name ?? opt?.value ?? opt ?? '').toString();
+                    return <option key={key} value={value}>{label}</option>
                 })}
             </NativeSelect>
         </FormControl>
