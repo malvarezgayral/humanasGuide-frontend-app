@@ -5,7 +5,7 @@ interface CustomSelectionProps {
     setPickedValue: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
     name?: string;
     id: number | string | undefined;
-    iterableOptions?: any[];
+    iterableOptions?: unknown[];
     title: string;
     disable?: boolean;
 }
@@ -22,6 +22,8 @@ function CustomSelection(props: CustomSelectionProps) {
             .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
     }; */
+
+    console.log("iterableOptions: ", iterableOptions)
 
     return <div className="py-5 w-[200px]">
         <FormControl>
@@ -40,9 +42,9 @@ function CustomSelection(props: CustomSelectionProps) {
                 onChange={setPickedValue}
             >
                 <option style={{ display: 'none' }} key="" value=""></option>
-                {(iterableOptions ?? []).map((opt: any, idx: number) => {
-                    const key = (opt?.id ?? opt?.value ?? opt ?? idx) as string | number;
-                    const value = (opt?.id ?? opt?.value ?? opt ?? '') as string | number;
+                {(iterableOptions ?? []).map((opt: unknown, idx: number) => {
+                    const key = (opt?.id ?? opt?.name ?? opt ?? idx) as string | number;
+                    const value = (opt?.id ?? opt?.value ?? opt?.name ?? opt ?? '') as string | number;
                     const label = (opt?.name ?? opt?.value ?? opt ?? '').toString();
                     return <option key={key} value={value}>{label}</option>
                 })}
