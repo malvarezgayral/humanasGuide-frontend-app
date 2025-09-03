@@ -1,7 +1,6 @@
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FileRow } from "./interfacesAndTypes";
 import { Button } from "@mui/material";
-import CustomButton from "@/components/CustomButton";
 
 const columns: GridColDef<FileRow>[] = [
     /* { field: "id", headerName: "ID", width: 0 }, */
@@ -28,7 +27,7 @@ const columns: GridColDef<FileRow>[] = [
         );
       }
     },
-    { field: "month", headerName: "Llamado", sortable: false, width: 160 },
+    { field: "month", headerName: "Llamado", sortable: false, width: 160, valueGetter: (value) => (value !== "NULL" ? value : ""), align: "center" },
 ];
 
 export default columns;
