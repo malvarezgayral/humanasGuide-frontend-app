@@ -1,5 +1,6 @@
 import { FileRow } from "@/constants/interfacesAndTypes";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], setFilteredRows: Function) => {
     const [filters, setFilters] = useState({
@@ -13,6 +14,8 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
 
     // Actualizar los filtros
         const handleFilterChange = (field: keyof FileRow | 'name' | 'subject' | 'majors' | 'type' | 'startDate' | 'endDate', value: any) => {
+            console.log("value: ", value)
+            console.log("field: ", field)
             setFilters((prev) => ({ ...prev, [field]: value }));
         }
     
@@ -59,16 +62,21 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
             );
 
         }
-        /* if (filters.startDate) {
-            filtered = filtered.filter(
-                (row) => dayjs(row.uploadDate) >= dayjs(filters.startDate)
-            );
+        // Filtro por rango de fechas (inclusive)
+        if (filters.startDate) {
+            const startMs = dayjs(filters.startDate as any).startOf('day').valueOf();
+            filtered = filtered.filter((row) => {
+                const rowMs = new Date(row.uploadDate as unknown as string | number | Date).setHours(0, 0, 0, 0);
+                return rowMs >= startMs;
+            });
         }
         if (filters.endDate) {
-            filtered = filtered.filter(
-                (row) => dayjs(row.uploadDate) <= dayjs(filters.endDate)
-            );
-        } */
+            const endMs = dayjs(filters.endDate as any).endOf('day').valueOf();
+            filtered = filtered.filter((row) => {
+                const rowMs = new Date(row.uploadDate as unknown as string | number | Date).setHours(0, 0, 0, 0);
+                return rowMs <= endMs;
+            });
+        }
 
         setFilteredRows(filtered);
     }, [filters, filesRows]);

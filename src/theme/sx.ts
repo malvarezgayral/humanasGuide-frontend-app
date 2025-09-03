@@ -19,7 +19,8 @@ export const NativeSelectPrimary = {
     backgroundColor: red,
     borderRadius: '0.6rem',
     padding: '2px',
-    width: '12rem'
+    width: '12rem',
+    border: '3px solid #F2F1F8',
 }
 
 export const InputLabelPrimary = {

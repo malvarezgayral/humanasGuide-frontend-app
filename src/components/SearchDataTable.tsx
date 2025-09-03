@@ -3,13 +3,10 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { TextField, Autocomplete } from "@mui/material";
-/* import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; */
-import dayjs from "dayjs";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import { FileRow } from "@/constants/interfacesAndTypes";
 import columns from "@/constants/table";
-import { useEffect, useState } from "react";
 import { useTableService } from "@/hooks/searchTable/useTableService";
 import { useFilter } from "@/hooks/searchTable/useFilter";
 
@@ -64,8 +61,6 @@ export const SearchDataTable = () => {
                     )}
                     sx={{ flex: "1 1 200px" }}
                 />
-
-                {/*
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         label="Fecha desde"
@@ -83,7 +78,7 @@ export const SearchDataTable = () => {
                             <TextField {...params} variant="outlined" sx={{ flex: "1 1 200px" }} />
                         )}
                     />
-                </LocalizationProvider> */}
+                </LocalizationProvider>
             </div>
             <div className="mx-8 my-2 h-[370px] w-[1460px] border-2 border-solid rounded-lg">  {/* Tabla */}
                 <DataGrid
