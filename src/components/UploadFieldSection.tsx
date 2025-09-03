@@ -9,11 +9,11 @@ export const UploadFieldSection = (props: any) => {
 
         if (file) {
             // Validar tipo de archivo
-            const allowedTypes = [".pdf", ".odt", ".docx"];
+            const allowedTypes = [".pdf", ".odt", ".docx", ".png"];
             const fileType = file.name.split(".").pop()?.toLowerCase();
 
             if (!allowedTypes.includes(`.${fileType}`)) {
-                setErrorMessage("Formato de archivo no permitido. Solo .pdf, .odt, .docx");
+                setErrorMessage("Formato de archivo no permitido. Solo .pdf, .odt, .docx, .png");
                 setSelectedFile(null);
                 return;
             }
@@ -35,7 +35,7 @@ export const UploadFieldSection = (props: any) => {
         <div className="pt-4">
             <input
                 type="file"
-                accept=".pdf,.odt,.docx"
+                accept=".pdf,.odt,.docx,.png"
                 onChange={handleFileChange}
                 className="border-solid border-primaryOrange border-2 rounded w-[158px]"
             />
