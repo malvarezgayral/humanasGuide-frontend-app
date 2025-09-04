@@ -13,7 +13,7 @@ import { useFilter } from "@/hooks/searchTable/useFilter";
 export const SearchDataTable = () => {
     
 
-    const { subjectsOptions, majorsOptions, typeFilesOptions, filesRows, filteredRows, setFilteredRows } = useTableService()
+    const { subjectsOptions, majorsOptions, typeFilesOptions, yearsOptions, filesRows, filteredRows, setFilteredRows } = useTableService()
     const { filters, handleFilterChange } = useFilter(filesRows, filteredRows, setFilteredRows)
 
     return (
@@ -61,6 +61,17 @@ export const SearchDataTable = () => {
                     )}
                     sx={{ flex: "1 1 200px" }}
                 />
+                {/* Filtro por Año */}
+                <Autocomplete
+                    options={yearsOptions}
+                    value={filters.year}
+                    onChange={(e, value) => handleFilterChange("year", value)}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Año" variant="outlined" />
+                    )}
+                    sx={{ flex: "1 1 200px" }}
+                />
+                {/* Filtro por rango de fechas */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         label="Fecha desde"

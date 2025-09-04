@@ -11,13 +11,13 @@ interface Major {
 }
 
 export interface FileRow {
-    /* id: number; */
     name: string;
     subject: string;
     majors: Major[];
     quarter: number;
     type: string;
-    /* uploadDate: string; */
+    year: string;
+    uploadDate: string;
     url: string;
     month: string;
 }

@@ -8,25 +8,22 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         subject: "",
         majors: "",
         type: "",
+        year: "",
         startDate: null,
         endDate: null,
     });
 
     // Actualizar los filtros
-        const handleFilterChange = (field: keyof FileRow | 'name' | 'subject' | 'majors' | 'type' | 'startDate' | 'endDate', value: any) => {
-            console.log("value: ", value)
-            console.log("field: ", field)
+        const handleFilterChange = (field: keyof FileRow | 'name' | 'subject' | 'majors' | 'type' | 'year' | 'startDate' | 'endDate', value: any) => {
             setFilters((prev) => ({ ...prev, [field]: value }));
         }
     
         useEffect(() => {
             //leemos los parametros de la URL si existen para los filtros
             const searchParams = new URLSearchParams(window.location.search);
-            console.log("searchParams: ", searchParams)
             const major = searchParams.get('major');
             const subject = searchParams.get('subject');
-            console.log("major: ", major)
-            console.log("subject: ", subject)
+            
     
             if (subject) {
                 handleFilterChange("subject", subject);
@@ -37,9 +34,13 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         }, []);
 
     const filterRows = (field: keyof typeof filters, filtered: FileRow[]) => {
+        console.log("field: ", field)
         if (field) {
-            filtered = filtered.filter((row) =>
-                (row[field as keyof FileRow]?.toString().toLowerCase() || "").includes((filters[field]?.toString().toLowerCase() || ""))
+            filtered = filtered.filter((row) => {
+                console.log("row[field]: ", row[field as keyof FileRow]);
+                return (row[field as keyof FileRow]?.toString().toLowerCase() || "").includes((filters[field]?.toString().toLowerCase() || ""))
+            }
+                
             );
         }
         return filtered;
@@ -52,6 +53,7 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         filtered = filterRows('name', filtered);
         filtered = filterRows('subject', filtered);
         filtered = filterRows('type', filtered);
+        filtered = filterRows('year', filtered);
 
         /* filtered = filterRows(filters.major, filtered); */
         if (filters.majors) {

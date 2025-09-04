@@ -13,6 +13,7 @@ const columns: GridColDef<FileRow>[] = [
     { field: "quarter", headerName: "Cuatrimestre", type: "number", width: 150 },
     { field: "type", headerName: "Tipo de recurso", width: 150 },
     { field: "uploadDate", headerName: "Fecha de subida", width: 110 },
+    { field: "year", headerName: "Año", width: 110 },
     { field: "url", headerName: "Link", width: 110, renderCell: (params: GridRenderCellParams) => {
         return (
           <Button>
