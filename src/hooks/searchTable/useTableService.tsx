@@ -34,9 +34,6 @@ export const useTableService = () => {
             }
         }
         fetchingData();
-        /* return () => {
-            console.log("SearchDataTable unmounted");
-        }; */
     }, []);
 
     return { subjectsOptions, majorsOptions, typeFilesOptions, filesRows, filteredRows, setFilteredRows, yearsOptions };

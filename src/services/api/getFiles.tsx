@@ -3,7 +3,6 @@ import axios from "axios";
 export const fetchAllFiles = async () => {  
     try {
         const response = await axios.get("http://localhost:8001/files");
-        /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error
@@ -14,7 +13,6 @@ export const fetchAllFiles = async () => {
 export const fetchAllFilesTable = async () => {
     try {
         const response = await axios.get("http://localhost:8001/files/table");
-        /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error
@@ -25,7 +23,6 @@ export const fetchAllFilesTable = async () => {
 export const fetchFileTypes = async () => {
     try {
         const response = await axios.get("http://localhost:8001/files/types");
-        /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error
@@ -36,7 +33,6 @@ export const fetchFileTypes = async () => {
 export const fetchMonths = async () => {
     try {
         const response = await axios.get("http://localhost:8001/files/months");
-        /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error
@@ -45,12 +41,10 @@ export const fetchMonths = async () => {
 };
 
 export const uploadFile = async (formData: FormData) => {
-    console.log(formData.get('file'));
     try {
         const response = await axios.post("http://localhost:8001/files/save", formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
-        /* console.log('response: ', response); */
         return response.data;
     } catch (error) {
         // Handle error

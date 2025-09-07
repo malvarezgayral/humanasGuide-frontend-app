@@ -99,7 +99,7 @@ function HomeComp() {
                 <CustomButton handleEventClick={handleNavigate} title='Buscar aportes' />
             </div>
             <div onClick={handleNavigateToUpload}>
-                <CustomButton handleEventClick={() => console.log('')} title='Subir aporte' />
+                <CustomButton handleEventClick={handleNavigateToUpload} title='Subir aporte' />
             </div>
         </div>
     </div>

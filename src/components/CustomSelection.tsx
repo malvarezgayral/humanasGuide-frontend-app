@@ -23,7 +23,6 @@ function CustomSelection(props: CustomSelectionProps) {
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
     }; */
 
-    console.log("iterableOptions: ", iterableOptions)
 
     return <div className="py-5 w-[200px]">
         <FormControl>

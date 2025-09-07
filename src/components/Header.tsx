@@ -11,8 +11,8 @@ function Header(){
     const { aphorism, getNewAphorism } = useAphorism();
 
     const handleClick = () => {
+      if (!rotated) getNewAphorism()
       setRotated((prev) => !prev);
-      if (rotated) getNewAphorism()
     };
 
 return <div className="min-h-12 w-full bg-primaryOrange">

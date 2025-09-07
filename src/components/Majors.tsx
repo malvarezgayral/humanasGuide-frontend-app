@@ -11,7 +11,6 @@ export const Majors = () => {
         const fetchingMajors = async () => {
             try {
                 const data = await fetchMajors();
-                console.log(data);
                 setFetchedMajors(data);
             } catch (error) {
                 console.error("Error fetching majors:", error);

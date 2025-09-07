@@ -19,13 +19,10 @@ export function useAphorism(){
             }
         };
         fetchingAph();
-
-        return () => {
-            console.log('unmounting');
-        };
     }, [])*/
 
     const getNewAphorism = async () => {
+        console.log('getting new aphorism');
         try {
             const data = await getAphorism();
             setAphorism(data);

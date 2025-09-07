@@ -43,7 +43,6 @@ export const UploadFile = () => {
             try {
                 const major = await getMajorByName(majorName);
                 if (major) {
-                    console.log("major: ", major)
                     setPickedMajorValue(major);
                 } else {
                     console.error("Major not found:", majorName);
@@ -55,9 +54,7 @@ export const UploadFile = () => {
         async function fetchSubjectByName(subjectName: string) {
             try {
                 const subject = await getSubjectByName(subjectName);
-                console.log("subject: ", subject)
                 if (subject) {
-                    //console.log("subject: ", subject)
                     setPickedSubjectValue(subject);
                 } else {
                     console.error("Subject not found:", subjectName);
@@ -72,11 +69,9 @@ export const UploadFile = () => {
         const subject = searchParams.get('subject');
     
         if (major) {
-            //console.log("major: ", major)
             fetchMajorByName(major)
         }
         if (subject) {
-            console.log("subject: ", subject)
             fetchSubjectByName(subject);
         }
 
@@ -103,11 +98,9 @@ export const UploadFile = () => {
             setErrorMessage("No se ha seleccionado ningún archivo válido.");
             return;
         }
-        /* console.log('selectedFile: ', selectedFile); */
 
         if (typeof isFormValid === 'function' ? isFormValid() : Boolean(isFormValid)) {
-            /* console.log(pickedSubjectValue)
-            console.log(pickedYearValue) */
+            
             // Crear un FormData para enviar el archivo al backend
             const formData = new FormData();
             formData.append("file", selectedFile);
@@ -115,15 +108,11 @@ export const UploadFile = () => {
             formData.append("tipo", pickedTypeValue?.toString() || "");
             formData.append("anio", pickedYearValue?.toString() || "");
             formData.append("llamado", pickedMonthValue?.toString() || "");
-            /* console.log('formData: ', formData); */
             uploadFile(formData);
         } else {
             setErrorMessage("El formulario no es válido para el envío.");
         }
     }
-
-    //console.log("pickedMajorValue: ", pickedMajorValue)
-    //console.log("pickedSubjectValue: ", pickedSubjectValue)
 
     return <>
         <div className=" bg-primaryWhite w-full flex justify-center pt-12">

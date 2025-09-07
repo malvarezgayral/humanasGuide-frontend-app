@@ -33,10 +33,6 @@ export const useUploadService = () => {
         };
 
         fetchingData()
-
-        return () => {
-            //console.log('unmounting');
-        };
     }, []);
 
     
@@ -61,7 +57,6 @@ export const useUploadService = () => {
         if (pickedTypeValue === "FINAL") {
             const getMonths = async () => {
                 const months = await fetchMonths();
-                console.log('months: ', months);
                 setMonths(months);
             };
  
