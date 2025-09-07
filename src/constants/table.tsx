@@ -17,8 +17,7 @@ const columns: GridColDef<FileRow>[] = [
     { field: "url", headerName: "Link", width: 110, renderCell: (params: GridRenderCellParams) => {
         return (
           <Button>
-            <a href={params
-              .value as string}
+            <a href={params.value as string}
               target="_blank"
               rel="noopener noreferrer"
             >

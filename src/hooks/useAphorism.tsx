@@ -1,16 +1,15 @@
 import { getAphorism } from "@/services/api/getAIAphorism";
-import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface AphObject {
-    autor: String;
-    aphorism: String
+    author: string;
+    aphorism: string;
 }
 
-function AphorismsBoxGenerator(){
+export function useAphorism(){
     const [aphorism, setAphorism] = useState<AphObject>();
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchingAph = async () => {
             try {
                 const data = await getAphorism();
@@ -22,9 +21,9 @@ function AphorismsBoxGenerator(){
         fetchingAph();
 
         return () => {
-            /* console.log('unmounting'); */
+            console.log('unmounting');
         };
-    }, [])
+    }, [])*/
 
     const getNewAphorism = async () => {
         try {
@@ -35,17 +34,5 @@ function AphorismsBoxGenerator(){
         }
     }
     
-    return <div className="w-1/4 bg-primaryOrange rounded-xl p-2 flex flex-col items-center">
-        {aphorism ? (
-            <>
-                <p>{aphorism.autor}:</p>
-                <p>{aphorism.aphorism}</p>
-            </>
-        ) : (
-            <p>Loading...</p> // Puedes mostrar un mensaje de carga mientras se obtiene el dato.
-        )}
-        <Button onClick={() => getNewAphorism()}>Pidele a la IA un aforismo!</Button>
-    </div>
+    return { getNewAphorism, aphorism }
 }
-
-export default AphorismsBoxGenerator;

@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import CustomSelection from "./CustomSelection";
-import { getAllSubjectsBy, getSubjectNameById } from "@/services/api/getSubjects";
+import { getAllSubjectsBy } from "@/services/api/getSubjects";
 import { fetchMajors } from "@/services/api/getMajors";
-import AphorismsBoxGenerator from "./AphorismsBoxGenerator";
 import { useRouter } from "next/navigation";
 
 function HomeComp() {
@@ -81,7 +80,6 @@ function HomeComp() {
     }
 
     return <div className="h-full w-full bg-primaryWhite py-8">
-        {/* <AphorismsBoxGenerator /> */}
         <div className="w-full flex flex-col items-center">
             {!isLoading && <CustomSelection
                 name={pickedMajorValue.name}

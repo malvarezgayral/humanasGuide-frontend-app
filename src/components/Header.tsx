@@ -3,18 +3,22 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import MenuDesplegable from './MenuDesplegable';
+import { useAphorism } from '@/hooks/useAphorism';
 
 function Header(){
     const [rotated, setRotated] = useState(false);
     const [isVisible, setVisible] = useState(false);
+    const { aphorism, getNewAphorism } = useAphorism();
 
     const handleClick = () => {
       setRotated((prev) => !prev);
+      if (rotated) getNewAphorism()
     };
 
 return <div className="min-h-12 w-full bg-primaryOrange">
     <div className="flex flex-row justify-between items-center">
         <ExpandMoreIcon onClick={handleClick} sx={{ 
+                            cursor: "pointer",
                             fontSize: 60, 
                             mx: 2,
                             transition: "transform 0.3s ease",
@@ -23,6 +27,8 @@ return <div className="min-h-12 w-full bg-primaryOrange">
     </div>
     
     {rotated && <MenuDesplegable />}
+    {rotated && !aphorism && <p className="uppercase text-[0.7rem] font-bold p-4 text-left typing-aphorism h-2 max-h-2">Aqui viene tu aforismo! ¿De quien sera? Podria ser cualquier filosofo...</p>}
+    {rotated && aphorism && <p className="uppercase text-[0.7rem] font-bold p-4 text-left typing-aphorism h-2 max-h-2">{aphorism?.author + ':'} {aphorism?.aphorism}</p>}
 </div>
 }
 

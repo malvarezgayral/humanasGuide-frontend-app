@@ -25,3 +25,18 @@ body {
     text-wrap: balance;
   }
 }
+
+.typing-aphorism {
+  animation: typing 4s steps(50), blink .4s infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0% { border-right: 1.5px solid transparent; }
+  50% { border-right: 1.5px solid white; }
+  100% { border-right: 1.5px solid transparent; }
+}

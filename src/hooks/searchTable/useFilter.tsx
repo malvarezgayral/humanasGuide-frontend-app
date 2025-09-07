@@ -34,10 +34,8 @@ export const useFilter = (filesRows: FileRow[] = [], filteredRows: FileRow[], se
         }, []);
 
     const filterRows = (field: keyof typeof filters, filtered: FileRow[]) => {
-        console.log("field: ", field)
         if (field) {
             filtered = filtered.filter((row) => {
-                console.log("row[field]: ", row[field as keyof FileRow]);
                 return (row[field as keyof FileRow]?.toString().toLowerCase() || "").includes((filters[field]?.toString().toLowerCase() || ""))
             }
                 
