@@ -7,7 +7,7 @@ interface AphObject {
 }
 
 export function useAphorism(){
-    const [aphorism, setAphorism] = useState<AphObject>();
+    const [aphorism, setAphorism] = useState<AphObject | null>(null);
 
     /*useEffect(() => {
         const fetchingAph = async () => {
@@ -31,5 +31,5 @@ export function useAphorism(){
         }
     }
     
-    return { getNewAphorism, aphorism }
+    return { getNewAphorism, aphorism, setAphorism }
 }

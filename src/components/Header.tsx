@@ -8,11 +8,13 @@ import { useAphorism } from '@/hooks/useAphorism';
 function Header(){
     const [rotated, setRotated] = useState(false);
     const [isVisible, setVisible] = useState(false);
-    const { aphorism, getNewAphorism } = useAphorism();
+    const { aphorism, setAphorism, getNewAphorism } = useAphorism();
 
     const handleClick = () => {
       if (!rotated) getNewAphorism()
-      setRotated((prev) => !prev);
+      setRotated((prev) => {
+        setAphorism(null);
+        return !prev});
     };
 
 return <div className="min-h-12 w-full bg-primaryOrange">
