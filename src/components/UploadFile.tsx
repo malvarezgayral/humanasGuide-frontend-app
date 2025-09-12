@@ -152,7 +152,7 @@ export const UploadFile = () => {
                         setPickedValue={handleChangeYear}
                         title={'año'}
                         iterableOptions={years}
-                        disable={pickedTypeValue === "RESUMEN" || pickedMajorValue.name === ""} />
+                        disable={pickedTypeValue === "RESUMEN" || pickedSubjectValue.name === ""} />
                     <CustomSelection
                         id={pickedMonthValue}
                         setPickedValue={handleChangeMonth}

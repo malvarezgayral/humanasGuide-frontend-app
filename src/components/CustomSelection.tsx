@@ -22,7 +22,8 @@ function CustomSelection(props: CustomSelectionProps) {
             .replace(/[_-]/g, " ") // Reemplazar guiones bajos y guiones por espacios
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalizar cada palabra
     }; */
-
+    console.log(title)
+    console.log(iterableOptions)
 
     return <div className="py-5 w-[200px]">
         <FormControl>
@@ -43,8 +44,8 @@ function CustomSelection(props: CustomSelectionProps) {
                 <option style={{ display: 'none' }} key="" value=""></option>
                 {(iterableOptions ?? []).map((opt: unknown, idx: number) => {
                     const key = (opt?.id ?? opt?.name ?? opt ?? idx) as string | number;
-                    const value = (opt?.id ?? opt?.value ?? opt?.name ?? opt ?? '') as string | number;
-                    const label = (opt?.name ?? opt?.value ?? opt ?? '').toString();
+                    const value = (opt?.id ?? opt ?? '') as string | number;
+                    const label = (opt?.name ?? opt ?? '').toString();
                     return <option key={key} value={value}>{label}</option>
                 })}
             </NativeSelect>
