@@ -1,5 +1,5 @@
 import { getAphorism } from "@/services/api/getAIAphorism";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface AphObject {
     author: string;
